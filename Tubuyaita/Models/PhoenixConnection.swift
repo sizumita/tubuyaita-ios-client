@@ -1,12 +1,12 @@
 //
-//  MessageReciver.swift
+//  PhoenixConnection.swift
 //  Tubuyaita
 //
 //  Created by Sumito Izumita on 2022/08/19.
 //
 
 import Foundation
-import SwiftUI
+import Combine
 import SwiftPhoenixClient
 import Sodium
 import Clibsodium
@@ -41,13 +41,19 @@ struct MessageContent : Codable {
 }
 
 
-class MessageReciver : ObservableObject {
+
+class PhoenixConnection {
     private let socket: Socket
     private var messageChannel: Channel?
     private let sodium = Sodium()
-    @State var url: String
-    @Published var messages: [Message] = []
-    var superCls: Connections
+    private var url: String
+    
+    let subject = PassthroughSubject<Message, Never>()
+    
+    init(url: String) {
+        self.url = url
+        self.socket = Socket(url)
+    }
     
     func connect() {
         socket.delegateOnOpen(to: self) { (self) in
@@ -71,7 +77,11 @@ class MessageReciver : ObservableObject {
         self.messageChannel?.join()
         self.socket.connect()
     }
-
+    
+    func disconnect() {
+        self.socket.disconnect()
+    }
+    
     private func recieveMessage(msg: SwiftPhoenixClient.Message) {
         if msg.event == "create_message" {
             let expectedHash = SHA512.hash(data: ((msg.payload["contents"] as? String)?.data(using: .utf8))!)
@@ -89,10 +99,8 @@ class MessageReciver : ObservableObject {
             if content.contents != nil {
                 
             } else {
-                messages.append(Message(id: sodium.utils.bin2hex(Array(expectedHash))!, content: content.body!, publicKey: msg.payload["publicKey"]! as! String, sign: msg.payload["sign"]!  as! String))
-                DispatchQueue.main.async {
-                    self.superCls.objectWillChange.send()
-                }
+                let message = Message(id: sodium.utils.bin2hex(Array(expectedHash))!, content: content.body!, publicKey: msg.payload["publicKey"]! as! String, sign: msg.payload["sign"]! as! String)
+                subject.send(message)
             }
         }
     }
@@ -111,10 +119,5 @@ class MessageReciver : ObservableObject {
         }
         return true
     }
-
-    init(url: String, superCls: Connections) {
-        self.url = url
-        self.socket = Socket(url)
-        self.superCls = superCls
-    }
+    
 }

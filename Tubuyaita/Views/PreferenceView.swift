@@ -27,7 +27,7 @@ struct PreferenceView: View {
                                 Text("abc")
                                     .navigationTitle(server.address!)
                             } label: {
-                                Text("サーバー\(server.address!)")
+                                Text(server.address!)
                             }
                         }.onDelete { offset in
                             offset.forEach { i in
