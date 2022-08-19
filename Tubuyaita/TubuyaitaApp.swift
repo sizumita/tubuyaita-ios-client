@@ -15,6 +15,7 @@ struct TubuyaitaApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(AccountStore())
         }
     }
 }

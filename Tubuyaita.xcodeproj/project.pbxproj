@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		692542BD28AE80AD00A754C6 /* SwiftPhoenixClient in Frameworks */ = {isa = PBXBuildFile; productRef = 692542BC28AE80AD00A754C6 /* SwiftPhoenixClient */; };
 		692C836D28AE3FD900FB2421 /* TubuyaitaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836C28AE3FD900FB2421 /* TubuyaitaApp.swift */; };
 		692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836E28AE3FD900FB2421 /* Persistence.swift */; };
 		692C837228AE3FD900FB2421 /* Tubuyaita.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 692C837028AE3FD900FB2421 /* Tubuyaita.xcdatamodeld */; };
@@ -18,6 +19,13 @@
 		692C839028AE3FDA00FB2421 /* TubuyaitaUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C838F28AE3FDA00FB2421 /* TubuyaitaUITestsLaunchTests.swift */; };
 		692C83A028AE473100FB2421 /* TimeLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C839F28AE473100FB2421 /* TimeLineView.swift */; };
 		692C83A428AE4A5C00FB2421 /* PreferenceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C83A328AE4A5C00FB2421 /* PreferenceView.swift */; };
+		69FD487628AF1392005EF55E /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 69FD487528AF1392005EF55E /* KeychainAccess */; };
+		69FD487828AF13EE005EF55E /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FD487728AF13EE005EF55E /* AccountStore.swift */; };
+		69FD487B28AF1795005EF55E /* Clibsodium in Frameworks */ = {isa = PBXBuildFile; productRef = 69FD487A28AF1795005EF55E /* Clibsodium */; };
+		69FD487D28AF1795005EF55E /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 69FD487C28AF1795005EF55E /* Sodium */; };
+		69FD487F28AF2365005EF55E /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FD487E28AF2365005EF55E /* RegisterView.swift */; };
+		69FD488128AF27F4005EF55E /* TweetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FD488028AF27F4005EF55E /* TweetView.swift */; };
+		69FD488328AF2A5E005EF55E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69FD488228AF2A5E005EF55E /* Message.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +62,10 @@
 		692C839C28AE431500FB2421 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		692C839F28AE473100FB2421 /* TimeLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineView.swift; sourceTree = "<group>"; };
 		692C83A328AE4A5C00FB2421 /* PreferenceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceView.swift; sourceTree = "<group>"; };
+		69FD487728AF13EE005EF55E /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
+		69FD487E28AF2365005EF55E /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		69FD488028AF27F4005EF55E /* TweetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetView.swift; sourceTree = "<group>"; };
+		69FD488228AF2A5E005EF55E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +73,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69FD487628AF1392005EF55E /* KeychainAccess in Frameworks */,
+				692542BD28AE80AD00A754C6 /* SwiftPhoenixClient in Frameworks */,
+				69FD487B28AF1795005EF55E /* Clibsodium in Frameworks */,
+				69FD487D28AF1795005EF55E /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +120,7 @@
 		692C836B28AE3FD900FB2421 /* Tubuyaita */ = {
 			isa = PBXGroup;
 			children = (
+				6952CA3F28AE945000F3F3FC /* Models */,
 				692C83A228AE4A4C00FB2421 /* Views */,
 				692C839D28AE470E00FB2421 /* iOS */,
 				692C839C28AE431500FB2421 /* Info.plist */,
@@ -163,8 +180,19 @@
 			isa = PBXGroup;
 			children = (
 				692C83A328AE4A5C00FB2421 /* PreferenceView.swift */,
+				69FD487E28AF2365005EF55E /* RegisterView.swift */,
+				69FD488028AF27F4005EF55E /* TweetView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6952CA3F28AE945000F3F3FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				69FD487728AF13EE005EF55E /* AccountStore.swift */,
+				69FD488228AF2A5E005EF55E /* Message.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +211,12 @@
 			dependencies = (
 			);
 			name = Tubuyaita;
+			packageProductDependencies = (
+				692542BC28AE80AD00A754C6 /* SwiftPhoenixClient */,
+				69FD487528AF1392005EF55E /* KeychainAccess */,
+				69FD487A28AF1795005EF55E /* Clibsodium */,
+				69FD487C28AF1795005EF55E /* Sodium */,
+			);
 			productName = Tubuyaita;
 			productReference = 692C836928AE3FD900FB2421 /* Tubuyaita.app */;
 			productType = "com.apple.product-type.application";
@@ -255,6 +289,11 @@
 				Base,
 			);
 			mainGroup = 692C836028AE3FD900FB2421;
+			packageReferences = (
+				692542BB28AE80AD00A754C6 /* XCRemoteSwiftPackageReference "SwiftPhoenixClient" */,
+				69FD487428AF1392005EF55E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				69FD487928AF1795005EF55E /* XCRemoteSwiftPackageReference "swift-sodium" */,
+			);
 			productRefGroup = 692C836A28AE3FD900FB2421 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -302,7 +341,11 @@
 				692C837428AE3FD900FB2421 /* ContentView.swift in Sources */,
 				692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */,
 				692C83A028AE473100FB2421 /* TimeLineView.swift in Sources */,
+				69FD487F28AF2365005EF55E /* RegisterView.swift in Sources */,
 				692C83A428AE4A5C00FB2421 /* PreferenceView.swift in Sources */,
+				69FD488328AF2A5E005EF55E /* Message.swift in Sources */,
+				69FD488128AF27F4005EF55E /* TweetView.swift in Sources */,
+				69FD487828AF13EE005EF55E /* AccountStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +699,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		692542BB28AE80AD00A754C6 /* XCRemoteSwiftPackageReference "SwiftPhoenixClient" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davidstump/SwiftPhoenixClient.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+		69FD487428AF1392005EF55E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		69FD487928AF1795005EF55E /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		692542BC28AE80AD00A754C6 /* SwiftPhoenixClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 692542BB28AE80AD00A754C6 /* XCRemoteSwiftPackageReference "SwiftPhoenixClient" */;
+			productName = SwiftPhoenixClient;
+		};
+		69FD487528AF1392005EF55E /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69FD487428AF1392005EF55E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		69FD487A28AF1795005EF55E /* Clibsodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69FD487928AF1795005EF55E /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Clibsodium;
+		};
+		69FD487C28AF1795005EF55E /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 69FD487928AF1795005EF55E /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		692C837028AE3FD900FB2421 /* Tubuyaita.xcdatamodeld */ = {

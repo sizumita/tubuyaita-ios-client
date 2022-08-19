@@ -9,15 +9,33 @@ import SwiftUI
 
 struct TimeLineView: View {
     @State private var isSettingPresented = false
+    @State var messages = [Server: [Message]]()
+    
+    @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
+    var servers: FetchedResults<Server>
+
     var body: some View {
         NavigationStack {
             List {
                 ForEach(1..<100) { i in
-                    NavigationLink("\(i)") {
-                        Text("\(i)")
-                    }
+                    TweetView(message: .init())
+                        .swipeActions(edge: .trailing) {
+                            NavigationLink {
+                                Text("av")
+                            } label: {
+                                Image(systemName: "info.circle")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "return")
+                            }
+                        }
                 }
-            }
+            }.listStyle(.grouped)
             .navigationBarTitle(Text("つぶやいたー"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -32,7 +50,8 @@ struct TimeLineView: View {
                             isSettingPresented.toggle()
                         }
                     } label: {
-                        Image(systemName: "server.rack")
+                        Image(systemName: "globe")
+                            .scaleEffect(1.2)
                     }
                 }
             }

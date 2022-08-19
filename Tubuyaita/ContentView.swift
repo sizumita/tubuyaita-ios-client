@@ -11,13 +11,20 @@ import CoreData
 struct ContentView: View {
     
     @Environment(\.managedObjectContext) private var viewContext
-    
+    @EnvironmentObject var account: AccountStore
+
     var body: some View {
-        #if os(iOS)
-        TimeLineView()
-        #else
-        Text("abc")
-        #endif
+        if account.publicKey == nil {
+            RegisterView()
+        } else {
+            ZStack {
+                #if os(iOS)
+                TimeLineView()
+                #else
+                Text("abc")
+                #endif
+            }
+        }
     }
  
 }
