@@ -19,7 +19,7 @@ struct ContentView: View {
         } else {
             ZStack {
                 #if os(iOS)
-                TimeLineView()
+                TimeLinesView()
                 #else
                 Text("abc")
                 #endif

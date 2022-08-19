@@ -9,6 +9,7 @@ import Foundation
 import KeychainAccess
 import Sodium
 import SwiftUI
+import Clibsodium
 
 class AccountStore : ObservableObject {
     private let keychain = Keychain(service: "com.sumidora.Tubuyaita").synchronizable(true)
@@ -47,5 +48,22 @@ class AccountStore : ObservableObject {
     
     init() {
         updatePublicKey()
+    }
+}
+
+extension AccountStore {
+    func verifyContent(publicKey: String, sign: String, message: Data) -> Bool {
+        let publicKey = sodium.utils.hex2bin(publicKey)
+        let sign = sodium.utils.hex2bin(sign)
+        if publicKey == nil || sign == nil {
+            return false
+        }
+
+        guard message.withUnsafeBytes({ p in
+            crypto_sign_verify_detached(sign!, p, UInt64(message.count), publicKey!)
+        }) == 0 else {
+            return false
+        }
+        return true
     }
 }

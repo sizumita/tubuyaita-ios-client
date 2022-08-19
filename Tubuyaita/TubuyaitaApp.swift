@@ -16,6 +16,7 @@ struct TubuyaitaApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(AccountStore())
+            
         }
     }
 }

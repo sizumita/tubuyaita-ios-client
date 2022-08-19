@@ -10,6 +10,11 @@ import SwiftUI
 struct PreferenceView: View {
     @Binding var isPresented: Bool
     @EnvironmentObject var account: AccountStore
+    @Environment(\.managedObjectContext) private var viewContext
+    @State private var isAddServerPresented = false
+    
+    @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
+    var servers: FetchedResults<Server>
     
 
     var body: some View {
@@ -17,21 +22,24 @@ struct PreferenceView: View {
             Form {
                 Section(header: Text("サーバー一覧")) {
                     List {
-                        ForEach(1..<3) { i in
+                        ForEach(servers) { server in
                             NavigationLink {
                                 Text("abc")
-                                    .navigationTitle("サーバー\(i)")
+                                    .navigationTitle(server.address!)
                             } label: {
-                                Text("サーバー\(i)")
+                                Text("サーバー\(server.address!)")
                             }
-                        }.onDelete { i in
-                            print(i)
+                        }.onDelete { offset in
+                            offset.forEach { i in
+                                viewContext.delete(servers[i])
+                            }
+                            try? viewContext.save()
                         }
                     }
                 }
                 Section(footer: Text("[サーバー一覧](https://google.com)から追加するサーバーを発見することができます")) {
                     Button("サーバー追加") {
-                        AccountStore().createAccount()
+                        isAddServerPresented.toggle()
                     }
                 }
                 Section(header: Text("現在のアカウント")) {
@@ -48,6 +56,9 @@ struct PreferenceView: View {
                     }
                 }
             }
+        }
+        .sheet(isPresented: $isAddServerPresented) {
+            AddServerView()
         }
     }
 }
