@@ -46,6 +46,9 @@ struct PreferenceView: View {
                     ShareLink("公開鍵: \(account.getHexPublicKey() ?? "")", item: account.getHexPublicKey() ?? "")
                     ShareLink("秘密鍵をコピー", item: account.getHexSecretKey() ?? "")
                             .foregroundColor(.red)
+                    Button("再生成") {
+                        account.createAccount()
+                    }
                 }
             }
             .navigationTitle("設定")

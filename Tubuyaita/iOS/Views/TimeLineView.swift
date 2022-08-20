@@ -16,7 +16,7 @@ struct TimeLineView: View {
                 Text("メッセージがありません")
             } else {
                 List {
-                    ForEach(model.messages) { msg in
+                    ForEach(model.messages.reversed()) { msg in
                         TweetView(message: msg)
                             .swipeActions(edge: .trailing) {
                                 NavigationLink {

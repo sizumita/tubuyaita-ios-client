@@ -8,11 +8,10 @@
 import SwiftUI
 
 struct CreateMessageView: View {
-    @State var server: Server
-    @Binding var retweet: Retweet?
+    @ObservedObject var model: CreateMessageModel
+    @EnvironmentObject var account: AccountStore
     
-    @SwiftUI.Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
-    @State var text = ""
+    @Environment(\.presentationMode) private var presentationMode: Binding<PresentationMode>
     @FocusState var focusField: Bool
 
     var body: some View {
@@ -25,7 +24,7 @@ struct CreateMessageView: View {
                         Text("@Sumidora").bold().font(.subheadline)
                         Spacer()
                     }
-                    TextField("なにがしたい？", text: $text, axis: .vertical)
+                    TextField("なにがしたい？", text: $model.text, axis: .vertical)
                         .focused($focusField, equals: true)
                         .onAppear() {
                             focusField = true
@@ -43,13 +42,26 @@ struct CreateMessageView: View {
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
-                            
+                            send()
                         } label: {
                             Text("つぶやく")
                                 .bold()
                         }
+                        .disabled(model.text == "")
                     }
                 }
+            }
+        }
+    }
+    
+    func send() {
+        Task {
+            let r = try? await model.send(account: account)
+            if r == nil {
+                return
+            }
+            if r! {
+                presentationMode.wrappedValue.dismiss()
             }
         }
     }

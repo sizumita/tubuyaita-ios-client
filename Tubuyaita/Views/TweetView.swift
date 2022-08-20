@@ -28,7 +28,10 @@ struct TweetView: View {
                             .foregroundColor(.gray)
                         Spacer()
                     }.frame(alignment: .leading)
-                    Text(message.content)
+                    HStack {
+                        Text(message.content)
+                        Spacer(minLength: 0)
+                    }
                         .gridCellColumns(2)
                         .gridCellAnchor(.leading)
                 }.gridCellAnchor(.topLeading)

@@ -8,20 +8,31 @@
 import SwiftUI
 
 struct TimeLinesView: View {
-    @State private var isSettingPresented = false
-    @EnvironmentObject var account: AccountStore
-    
     @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
     var servers: FetchedResults<Server>
-
-    @State var selectedServer: Server?
+    @StateObject var model: TimeLinesModel = TimeLinesModel()
 
     var body: some View {
         NavigationStack {
             ZStack {
                 ForEach(servers) { server in
-                    if server == selectedServer {
+                    if server == model.selectedServer {
                         TimeLineView(model: TimeLineModel.init(server: server))
+                    }
+                }
+                if model.selectedServer != nil {
+                    VStack {
+                        Spacer()
+                        HStack {
+                            Button {
+                                model.isCreateMessagePresented.toggle()
+                            } label: {
+                                Image(systemName: "paperplane.circle.fill")
+                                    .resizable()
+                                    .frame(width: 64, height: 64)
+                                    .foregroundColor(.accentColor)
+                            }.padding(.bottom, 32)
+                        }
                     }
                 }
             }
@@ -31,11 +42,11 @@ struct TimeLinesView: View {
                     Menu {
                         ForEach(servers) { server in
                             Button(server.address!) {
-                                selectedServer = server
+                                model.selectedServer = server
                             }
                         }
                         Button("設定") {
-                            isSettingPresented.toggle()
+                            model.isSettingPresented.toggle()
                         }
                     } label: {
                         Image(systemName: "globe")
@@ -43,17 +54,14 @@ struct TimeLinesView: View {
                     }
                 }
             }
-        }.fullScreenCover(isPresented: $isSettingPresented) {
-            PreferenceView(isPresented: $isSettingPresented)
+        }.fullScreenCover(isPresented: $model.isSettingPresented) {
+            PreferenceView(isPresented: $model.isSettingPresented)
         }
         .onAppear() {
-            selectedServer = servers.first
+            model.selectedServer = servers.first
         }
-    }
-}
-
-struct TimeLineView_Previews: PreviewProvider {
-    static var previews: some View {
-        TimeLinesView()
+        .fullScreenCover(isPresented: $model.isCreateMessagePresented) {
+            CreateMessageView(model: .init(server: $model.selectedServer))
+        }
     }
 }

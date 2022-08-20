@@ -24,7 +24,9 @@ class TimeLineModel : ObservableObject {
     func onAppear() {
         self.connection.connect()
         self.cancel = self.connection.subject.sink { msg in
-            self.messages.append(msg)
+            DispatchQueue.main.async {
+                self.messages.append(msg)
+            }
         }
     }
     
