@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct PreferenceView: View {
     @Binding var isPresented: Bool
@@ -24,7 +25,23 @@ struct PreferenceView: View {
                     List {
                         ForEach(servers) { server in
                             NavigationLink {
-                                Text("abc")
+                                Form {
+                                    Section("設定") {
+                                        Button("\(server.messages?.count ?? 0)個のメッセージデータを削除") {
+                                            if (server.messages?.count ?? 0) > 0 {
+                                                let deleteRequest = NSBatchDeleteRequest(objectIDs: (server.messages?.allObjects as! [Message]).map({ x in
+                                                    return x.objectID
+                                                }))
+                                                do {
+                                                    try viewContext.execute(deleteRequest)
+                                                    try viewContext.save()
+                                                } catch {
+                                                    print("消去に失敗しました")
+                                                }
+                                            }
+                                        }.foregroundColor(.red)
+                                    }
+                                }
                                     .navigationTitle(server.address!)
                             } label: {
                                 Text(server.address!)

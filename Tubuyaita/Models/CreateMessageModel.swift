@@ -30,8 +30,6 @@ class CreateMessageModel : ObservableObject {
     @Published var isError = false
     @Published var errorMessage = ""
     
-    private var sodium = Sodium()
-    
     init(server: Binding<Server?>) {
         self._server = server
     }
@@ -48,7 +46,7 @@ class CreateMessageModel : ObservableObject {
             return false
         }
 
-        let content = MessageContent(contents: nil, body: self.text, retweet: nil, timestamp: UInt64(NSDate().timeIntervalSince1970))
+        let content = MessageContent(contents: nil, body: self.text, retweet: nil, timestamp: UInt64((Date().timeIntervalSince1970 * 1000.0).rounded()))
         let encoder = JSONEncoder()
         guard let jsonContent = try? encoder.encode(content) else {
            fatalError("Failed to encode to JSON.")
@@ -63,7 +61,7 @@ class CreateMessageModel : ObservableObject {
         let parameters: [String: Any] = [
             "publicKey":account.publicKey!.hexa,
             "contents": String(data: jsonContent, encoding: .utf8)!,
-            "sign": signedContent.data.hexa,
+            "sign": signedContent.data.hexa
         ]
         
         // MARK: send http message

@@ -42,7 +42,7 @@ struct TimeLinesView: View {
                     Menu {
                         ForEach(servers) { server in
                             Button(server.address!) {
-                                model.selectedServer = server
+                                model.changeSelectedServer(server: server)
                             }
                         }
                         Button("設定") {
@@ -58,10 +58,13 @@ struct TimeLinesView: View {
             PreferenceView(isPresented: $model.isSettingPresented)
         }
         .onAppear() {
-            model.selectedServer = servers.first
+            model.changeSelectedServer(server: servers.first)
         }
-        .fullScreenCover(isPresented: $model.isCreateMessagePresented) {
+        .sheet(isPresented: $model.isCreateMessagePresented) {
             CreateMessageView(model: .init(server: $model.selectedServer))
+        }
+        .onDisappear() {
+            model.onDisappear()
         }
     }
 }

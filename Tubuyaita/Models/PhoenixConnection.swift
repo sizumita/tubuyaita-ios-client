@@ -11,6 +11,8 @@ import SwiftPhoenixClient
 import Sodium
 import Clibsodium
 import CryptoKit
+import CoreData
+import UIKit
 
 
 struct Retweet : Codable {
@@ -43,15 +45,16 @@ struct MessageContent : Codable {
 
 
 class PhoenixConnection {
+    let server: Server
     private let socket: Socket
     private var messageChannel: Channel?
     private let sodium = Sodium()
     private var url: String
+    private let context = PersistenceController.shared.container.viewContext
     
-    let subject = PassthroughSubject<Message, Never>()
-    
-    init(url: String) {
-        self.url = url
+    init(server: Server) {
+        self.server = server
+        self.url = "ws://\(server.address!):\(server.port)/socket"
         self.socket = Socket(url)
     }
     
@@ -99,8 +102,18 @@ class PhoenixConnection {
             if content.contents != nil {
                 
             } else {
-                let message = Message(id: sodium.utils.bin2hex(Array(expectedHash))!, content: content.body!, publicKey: msg.payload["publicKey"]! as! String, sign: msg.payload["sign"]! as! String)
-                subject.send(message)
+                let message = Message(context: context)
+                message.server = self.server
+                message.contentHash = Data(Array(expectedHash))
+                message.sign = Data(sodium.utils.hex2bin(msg.payload["sign"]! as! String)!)
+                // TODO: どうにかする
+                message.isMentioned = false
+                message.isContentEncrypted = false
+                message.parsedContent = content.body!
+                message.timestamp = Date(milliseconds: Int64(content.timestamp))
+                message.publicKey = Data(sodium.utils.hex2bin(msg.payload["publicKey"]! as! String)!)
+
+                try? context.save()
             }
         }
     }
