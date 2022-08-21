@@ -25,13 +25,13 @@ extension DataProtocol {
 
 class CreateMessageModel : ObservableObject {
     @Published var text = ""
-    @Binding var server: Server?
+    var server: Server?
     
     @Published var isError = false
     @Published var errorMessage = ""
     
-    init(server: Binding<Server?>) {
-        self._server = server
+    init(server: Server?) {
+        self.server = server
     }
     
     func send(account: AccountStore) async throws -> Bool {

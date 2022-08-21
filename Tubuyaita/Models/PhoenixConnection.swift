@@ -43,7 +43,6 @@ struct MessageContent : Codable {
 }
 
 
-
 class PhoenixConnection {
     let server: Server
     private let socket: Socket
@@ -51,14 +50,21 @@ class PhoenixConnection {
     private let sodium = Sodium()
     private var url: String
     private let context = PersistenceController.shared.container.viewContext
+    private var primaryFetchHistory: FetchHistory?
     
     init(server: Server) {
         self.server = server
-        self.url = "ws://\(server.address!):\(server.port)/socket"
+        self.url = "ws://\(server.address!):\(server.port)/sockets"
         self.socket = Socket(url)
     }
     
     func connect() {
+        primaryFetchHistory = FetchHistory(context: context)
+        primaryFetchHistory!.createdAt = Date()
+        primaryFetchHistory!.server = server
+        
+        try? context.save()
+
         socket.delegateOnOpen(to: self) { (self) in
             print("Connected")
         }
@@ -98,23 +104,23 @@ class PhoenixConnection {
                 print("json is invalid!")
                 return
             }
-            // if encrypted content
-            if content.contents != nil {
-                
-            } else {
-                let message = Message(context: context)
-                message.server = self.server
-                message.contentHash = Data(Array(expectedHash))
-                message.sign = Data(sodium.utils.hex2bin(msg.payload["sign"]! as! String)!)
-                // TODO: どうにかする
-                message.isMentioned = false
-                message.isContentEncrypted = false
-                message.parsedContent = content.body!
-                message.timestamp = Date(milliseconds: Int64(content.timestamp))
-                message.publicKey = Data(sodium.utils.hex2bin(msg.payload["publicKey"]! as! String)!)
-
-                try? context.save()
+            
+            let contentHash = Data(Array(expectedHash))
+            let timestamp = Date(milliseconds: Int64(content.timestamp))
+            let sign = Data(sodium.utils.hex2bin(msg.payload["sign"]! as! String)!)
+            let publicKey = Data(sodium.utils.hex2bin(msg.payload["publicKey"]! as! String)!)
+            let message = Message(context: context, server: server, contentHash: contentHash, content: content, sign: sign, publicKey: publicKey)
+            
+            // MARK: update fetch history
+            primaryFetchHistory!.latestMessageHash = contentHash
+            primaryFetchHistory!.latestMessageTimestamp = timestamp
+            // update last data if it is nil
+            if primaryFetchHistory!.lastMessageHash == nil {
+                primaryFetchHistory!.lastMessageHash = contentHash
+                primaryFetchHistory!.lastMessageTimestamp = timestamp
             }
+
+            try? context.save()
         }
     }
     

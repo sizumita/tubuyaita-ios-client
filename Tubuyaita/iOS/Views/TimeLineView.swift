@@ -7,29 +7,24 @@
 
 import SwiftUI
 
-extension Date {
-    init(milliseconds: Int64) {
-        self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
-    }
-}
 
 struct TimeLineView: View {
     @StateObject var model: TimeLineModel
+    @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(
-        entity: Server.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: false)],
-        animation: .default
-    )
-    var servers: FetchedResults<Server>
+    @FetchRequest(entity: FetchHistory.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FetchHistory.createdAt, ascending: false)])
+    var fetchHistories: FetchedResults<FetchHistory>
+    
+    @FetchRequest(entity: Message.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Message.timestamp, ascending: false)])
+    var messages: FetchedResults<Message>
 
     var body: some View {
         ZStack {
-            if servers.first?.messages?.count == 0 {
+            if messages.count == 0 {
                 Text("メッセージがありません")
             } else {
                 List {
-                    ForEach((servers.first?.messages?.sortedArray(using: [NSSortDescriptor(keyPath: \Message.timestamp, ascending: false)]) ?? []) as! [Message]) { msg in
+                    ForEach(messages) { msg in
                         TweetView(message: msg)
                             .swipeActions(edge: .trailing) {
                                 NavigationLink {
@@ -46,14 +41,38 @@ struct TimeLineView: View {
                                     Image(systemName: "return")
                                 }
                             }
+                        let historyIndex = fetchHistories.firstIndex { history in
+                            return history.lastMessageHash == msg.contentHash
+                        }
+                        if historyIndex != nil && !fetchHistories[historyIndex!].fetched {
+                            Button {
+                                // msgを使ってメッセージ一覧を次存在するメッセージまで取ってくる。
+                                // 取ってきたらhistoryを消す！
+                                model.loadMessages(history: fetchHistories[historyIndex!],
+                                                   isFirst: historyIndex! == 0,
+                                                   previousHistory: historyIndex! < (fetchHistories.count-1) ? fetchHistories[historyIndex! + 1] : nil)
+                            } label: {
+                                Label {
+                                    Text("読み込む")
+                                } icon: {
+                                    Image(systemName: "doc.text.magnifyingglass")
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
-        .navigationTitle(Text(model.server.address!))
         .listStyle(.grouped)
         .onAppear() {
-            servers.nsPredicate = NSPredicate(format: "address == %@", model.server.address!)
+            messages.nsPredicate = NSPredicate(format: "server == %@", model.server)
+            fetchHistories.nsPredicate = NSPredicate(format: "server == %@", model.server)
+            fetchHistories.forEach { history in
+                if history != fetchHistories.first && history.lastMessageHash == nil {
+                    viewContext.delete(history)
+                }
+            }
+            try? viewContext.save()
         }
     }
 }

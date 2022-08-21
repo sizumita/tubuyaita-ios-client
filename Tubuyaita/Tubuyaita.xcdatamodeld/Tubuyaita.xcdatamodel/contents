@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="FetchHistory" representedClassName="FetchHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="lastMessageHash" optional="YES" attributeType="Binary"/>
+        <attribute name="lastMessageTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="latestMessageHash" optional="YES" attributeType="Binary"/>
+        <attribute name="latestMessageTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="fetchHistories" inverseEntity="Server"/>
+    </entity>
     <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
         <attribute name="contentHash" optional="YES" attributeType="Binary"/>
         <attribute name="isContentEncrypted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -13,6 +22,7 @@
     <entity name="Server" representedClassName="Server" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="port" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="fetchHistories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FetchHistory" inverseName="server" inverseEntity="FetchHistory"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="server" inverseEntity="Message"/>
         <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="server" inverseEntity="User"/>
     </entity>

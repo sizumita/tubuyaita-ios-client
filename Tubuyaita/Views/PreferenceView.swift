@@ -28,17 +28,13 @@ struct PreferenceView: View {
                                 Form {
                                     Section("設定") {
                                         Button("\(server.messages?.count ?? 0)個のメッセージデータを削除") {
-                                            if (server.messages?.count ?? 0) > 0 {
-                                                let deleteRequest = NSBatchDeleteRequest(objectIDs: (server.messages?.allObjects as! [Message]).map({ x in
-                                                    return x.objectID
-                                                }))
-                                                do {
-                                                    try viewContext.execute(deleteRequest)
-                                                    try viewContext.save()
-                                                } catch {
-                                                    print("消去に失敗しました")
-                                                }
-                                            }
+                                            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Message")
+                                            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                                            try? viewContext.execute(deleteRequest)
+                                            let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "FetchHistory")
+                                            let deleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
+                                            try? viewContext.execute(deleteRequest2)
+
                                         }.foregroundColor(.red)
                                     }
                                 }

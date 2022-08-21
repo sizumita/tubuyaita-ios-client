@@ -15,12 +15,16 @@ struct TimeLinesView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                ForEach(servers) { server in
-                    if server == model.selectedServer {
-                        TimeLineView(model: TimeLineModel.init(server: server))
-                    }
-                }
                 if model.selectedServer != nil {
+                    TabView {
+                        TimeLineView(model: TimeLineModel.init(server: model.selectedServer!)).tabItem {
+                            Image(systemName: "bubble.left.fill")
+                        }
+                        Text("ユーザー一覧")
+                            .tabItem {
+                                Image(systemName: "person.circle.fill")
+                            }
+                    }.navigationTitle(model.selectedServer?.address ?? "サーバーを選択してください")
                     VStack {
                         Spacer()
                         HStack {
@@ -61,7 +65,7 @@ struct TimeLinesView: View {
             model.changeSelectedServer(server: servers.first)
         }
         .sheet(isPresented: $model.isCreateMessagePresented) {
-            CreateMessageView(model: .init(server: $model.selectedServer))
+            CreateMessageView(model: .init(server: model.selectedServer))
         }
         .onDisappear() {
             model.onDisappear()
