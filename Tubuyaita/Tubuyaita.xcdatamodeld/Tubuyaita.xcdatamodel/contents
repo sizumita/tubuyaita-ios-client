@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21277" systemVersion="21G72" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Account" representedClassName="Account" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="iconUrl" optional="YES" attributeType="URI"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
+        <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="accounts" inverseEntity="Server"/>
+    </entity>
     <entity name="FetchHistory" representedClassName="FetchHistory" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="fetched" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -22,14 +28,8 @@
     <entity name="Server" representedClassName="Server" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String"/>
         <attribute name="port" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Account" inverseName="server" inverseEntity="Account"/>
         <relationship name="fetchHistories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FetchHistory" inverseName="server" inverseEntity="FetchHistory"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="server" inverseEntity="Message"/>
-        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="server" inverseEntity="User"/>
-    </entity>
-    <entity name="User" representedClassName="User" isAbstract="YES" syncable="YES" codeGenerationType="class">
-        <attribute name="iconUrl" optional="YES" attributeType="URI"/>
-        <attribute name="name" optional="YES" attributeType="String"/>
-        <attribute name="publicKey" optional="YES" attributeType="Binary"/>
-        <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="users" inverseEntity="Server"/>
     </entity>
 </model>

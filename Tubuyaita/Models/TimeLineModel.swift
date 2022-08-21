@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 import Sodium
 import CryptoKit
+import CoreData
 
 struct Cursor : Codable {
     var t: Int64
@@ -34,6 +35,19 @@ class TimeLineModel : ObservableObject {
         self.server = server
     }
     
+    func getAccount(publicKey: String) -> Account? {
+        let predicate = NSPredicate(format: "publicKey == %@ && server == %@", publicKey, server)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        request.predicate = predicate
+        
+        do {
+            let accounts = try context.fetch(request) as! [Account]
+            return accounts.first
+        } catch {
+            return nil
+        }
+    }
+    
     func loadMessages(history: FetchHistory, isFirst: Bool, previousHistory: FetchHistory?) {
         let cursor = Cursor(t: history.lastMessageTimestamp!.toUnixTimeMilliseconds(), v: 1, h: history.lastMessageHash!.hexa)
         let encoder = JSONEncoder()
@@ -47,13 +61,16 @@ class TimeLineModel : ObservableObject {
 
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             var isEnd = false
-            var lastMessage: ReceivedMessage?
+            var addedPublicKey: [String] = []
             
             guard let data = data else { return }
             let decoder = JSONDecoder()
             
-            guard let msgs: [ReceivedMessage] = try? decoder.decode([ReceivedMessage].self, from: data) else {
+            guard let _msgs: [ReceivedMessage] = try? decoder.decode([ReceivedMessage].self, from: data) else {
                 return
+            }
+            let msgs = _msgs.sorted { msg1, msg2 in
+                msg1.created_at > msg2.created_at
             }
             for message in msgs {
                 if previousHistory != nil {
@@ -72,24 +89,34 @@ class TimeLineModel : ObservableObject {
                 let contentHash = Data(Array(SHA512.hash(data: (message.contents_hash.data(using: .utf8))!)))
                 // TODO: validate
                 let _ = Message(context: self.context, server: self.server, contentHash: contentHash, content: content, sign: sign, publicKey: publicKey)
-                if lastMessage != nil {
-                    if lastMessage!.created_at < message.created_at {
-                        lastMessage = message
+                
+                // MARK: Add account
+                if !addedPublicKey.contains(message.public_key) {
+                    let acc = self.getAccount(publicKey: message.public_key)
+                    if acc == nil {
+                        let account = Account(context: self.context)
+                        account.server = self.server
+                        account.publicKey = message.public_key
+                        
+                        addedPublicKey.append(message.public_key)
+                    } else {
+                        addedPublicKey.append(acc!.publicKey!)
                     }
-                } else {
-                    lastMessage = message
                 }
             }
+            print(isEnd)
+            print(msgs.count)
             if isEnd {
                 previousHistory!.latestMessageHash = history.latestMessageHash
                 previousHistory!.latestMessageTimestamp = history.latestMessageTimestamp
+                try? self.context.save()
                 self.context.delete(history)
             } else {
                 if msgs.isEmpty {
                     history.fetched = true
                 } else {
-                    history.lastMessageTimestamp = Date(milliseconds: Int64(lastMessage!.created_at))
-                    history.lastMessageHash = Data(Array(SHA512.hash(data: (lastMessage!.contents_hash.data(using: .utf8))!)))
+                    history.lastMessageTimestamp = Date(milliseconds: Int64(msgs.last!.created_at))
+                    history.lastMessageHash = Data(Array(SHA512.hash(data: (msgs.last!.contents_hash.data(using: .utf8))!)))
                 }
             }
 

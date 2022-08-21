@@ -17,6 +17,9 @@ struct TimeLineView: View {
     
     @FetchRequest(entity: Message.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Message.timestamp, ascending: false)])
     var messages: FetchedResults<Message>
+    
+    @FetchRequest(entity: Account.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Account.name, ascending: true)])
+    var accounts: FetchedResults<Account>
 
     var body: some View {
         ZStack {
@@ -67,6 +70,7 @@ struct TimeLineView: View {
         .onAppear() {
             messages.nsPredicate = NSPredicate(format: "server == %@", model.server)
             fetchHistories.nsPredicate = NSPredicate(format: "server == %@", model.server)
+            accounts.nsPredicate = NSPredicate(format: "server == %@", model.server)
             fetchHistories.forEach { history in
                 if history != fetchHistories.first && history.lastMessageHash == nil {
                     viewContext.delete(history)

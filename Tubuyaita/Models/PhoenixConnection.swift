@@ -91,6 +91,19 @@ class PhoenixConnection {
         self.socket.disconnect()
     }
     
+    func getAccount(publicKey: String) -> Account? {
+        let predicate = NSPredicate(format: "publicKey == %@ && server == %@", publicKey, server)
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Account")
+        request.predicate = predicate
+        
+        do {
+            let accounts = try context.fetch(request) as! [Account]
+            return accounts.first
+        } catch {
+            return nil
+        }
+    }
+    
     private func recieveMessage(msg: SwiftPhoenixClient.Message) {
         if msg.event == "create_message" {
             let expectedHash = SHA512.hash(data: ((msg.payload["contents"] as? String)?.data(using: .utf8))!)
@@ -111,6 +124,12 @@ class PhoenixConnection {
             let publicKey = Data(sodium.utils.hex2bin(msg.payload["publicKey"]! as! String)!)
             let message = Message(context: context, server: server, contentHash: contentHash, content: content, sign: sign, publicKey: publicKey)
             
+            if (getAccount(publicKey: msg.payload["publicKey"]! as! String) == nil) {
+                let account = Account(context: context)
+                account.server = server
+                account.publicKey = (msg.payload["publicKey"]! as! String)
+            }
+
             // MARK: update fetch history
             primaryFetchHistory!.latestMessageHash = contentHash
             primaryFetchHistory!.latestMessageTimestamp = timestamp

@@ -49,7 +49,6 @@ class AccountStore : ObservableObject {
         guard crypto_sign_ed25519_keypair(&pk, &sk) == 0 else {
             return
         }
-        print(pk)
         keychain[data: "secretKey"] = Data(bytes: sk, count: sk.count)
         keychain[data: "publicKey"] = Data(bytes: pk, count: pk.count)
         updatePublicKey()
@@ -60,32 +59,6 @@ class AccountStore : ObservableObject {
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }
-    }
-    
-    func createCurvePublicKey(pk: Data) -> Bytes? {
-        var curve25519PublicKey = Bytes(repeating: 0, count: 32)
-        guard pk.withUnsafeBytes { p in
-            guard crypto_sign_ed25519_pk_to_curve25519(&curve25519PublicKey, p) == 0 else {
-                return 1
-            }
-            return 0
-        } == 0 else {
-            return nil
-        }
-        return curve25519PublicKey
-    }
-    
-    func createCurveSecretKey(sk: Data) -> Bytes? {
-        var curve25519SecretKey = Bytes(repeating: 0, count: 32)
-        guard sk.withUnsafeBytes({ sk in
-            guard crypto_sign_ed25519_sk_to_curve25519(&curve25519SecretKey, sk) == 0 else {
-                return 1
-            }
-            return 0
-        }) == 0 else {
-            return nil
-        }
-        return curve25519SecretKey
     }
 
     func boxWithCurve(message: Bytes, pk: Bytes) -> Bytes? {
