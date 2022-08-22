@@ -30,6 +30,7 @@ class TimeLineModel : ObservableObject {
     var server: Server
     private var sodium = Sodium()
     private var context = PersistenceController.shared.container.viewContext
+    @Published var searchText = ""
 
     init(server: Server) {
         self.server = server
@@ -85,10 +86,9 @@ class TimeLineModel : ObservableObject {
                     return
                 }
                 let sign = Data(self.sodium.utils.hex2bin(message.sign)!)
-                let publicKey = Data(self.sodium.utils.hex2bin(message.public_key)!)
                 let contentHash = Data(Array(SHA512.hash(data: (message.contents_hash.data(using: .utf8))!)))
                 // TODO: validate
-                let _ = Message(context: self.context, server: self.server, contentHash: contentHash, content: content, sign: sign, publicKey: publicKey)
+                let _ = Message(context: self.context, server: self.server, contentHash: contentHash, content: content, sign: sign, publicKey: message.public_key)
                 
                 // MARK: Add account
                 if !addedPublicKey.contains(message.public_key) {

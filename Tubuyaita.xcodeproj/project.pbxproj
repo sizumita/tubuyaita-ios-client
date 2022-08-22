@@ -29,6 +29,9 @@
 		69557F2928AFB80C0008E44B /* PhoenixConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2828AFB80C0008E44B /* PhoenixConnection.swift */; };
 		69557F2B28AFCAC20008E44B /* TimeLinesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2A28AFCAC20008E44B /* TimeLinesModel.swift */; };
 		69557F2D28AFCFF60008E44B /* CreateMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */; };
+		6964285D28B27BF600DA84FF /* AccountLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6964285C28B27BF600DA84FF /* AccountLabelView.swift */; };
+		6964286028B31D8B00DA84FF /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6964285F28B31D8B00DA84FF /* MessageSender.swift */; };
+		6964286228B3375C00DA84FF /* MessageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6964286128B3375C00DA84FF /* MessageDetailView.swift */; };
 		69B0F7AD28B1D060000A98FB /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B0F7AC28B1D060000A98FB /* Date+Extension.swift */; };
 		69B0F7B228B1DC24000A98FB /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B0F7B128B1DC24000A98FB /* Message+Extension.swift */; };
 		69FD487628AF1392005EF55E /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 69FD487528AF1392005EF55E /* KeychainAccess */; };
@@ -84,6 +87,9 @@
 		69557F2828AFB80C0008E44B /* PhoenixConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoenixConnection.swift; sourceTree = "<group>"; };
 		69557F2A28AFCAC20008E44B /* TimeLinesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLinesModel.swift; sourceTree = "<group>"; };
 		69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessageModel.swift; sourceTree = "<group>"; };
+		6964285C28B27BF600DA84FF /* AccountLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLabelView.swift; sourceTree = "<group>"; };
+		6964285F28B31D8B00DA84FF /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
+		6964286128B3375C00DA84FF /* MessageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailView.swift; sourceTree = "<group>"; };
 		69B0F7AC28B1D060000A98FB /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		69B0F7B128B1DC24000A98FB /* Message+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Extension.swift"; sourceTree = "<group>"; };
 		69FD487728AF13EE005EF55E /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
@@ -144,7 +150,7 @@
 		692C836B28AE3FD900FB2421 /* Tubuyaita */ = {
 			isa = PBXGroup;
 			children = (
-				69B0F7AE28B1D155000A98FB /* Protocols */,
+				6964285E28B31D7200DA84FF /* Classes */,
 				69B0F7AB28B1D04E000A98FB /* Extensions */,
 				6952CA3F28AE945000F3F3FC /* Models */,
 				692C83A228AE4A4C00FB2421 /* Views */,
@@ -213,6 +219,8 @@
 				69557F2228AF85C60008E44B /* CreateMessageView.swift */,
 				6953BCEC28B260E400EC924F /* AccountsView.swift */,
 				695478BD28B26AF700FEA9E0 /* AccountDetailView.swift */,
+				6964285C28B27BF600DA84FF /* AccountLabelView.swift */,
+				6964286128B3375C00DA84FF /* MessageDetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -230,6 +238,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6964285E28B31D7200DA84FF /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				6964285F28B31D8B00DA84FF /* MessageSender.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		69B0F7AB28B1D04E000A98FB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,13 +254,6 @@
 				6953BCEA28B247AF00EC924F /* Sodium+Extension.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		69B0F7AE28B1D155000A98FB /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -392,11 +401,14 @@
 				69557F2928AFB80C0008E44B /* PhoenixConnection.swift in Sources */,
 				690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */,
 				692C837228AE3FD900FB2421 /* Tubuyaita.xcdatamodeld in Sources */,
+				6964286028B31D8B00DA84FF /* MessageSender.swift in Sources */,
 				692C837428AE3FD900FB2421 /* ContentView.swift in Sources */,
 				695478BE28B26AF700FEA9E0 /* AccountDetailView.swift in Sources */,
 				69557F2328AF85C60008E44B /* CreateMessageView.swift in Sources */,
 				692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */,
+				6964286228B3375C00DA84FF /* MessageDetailView.swift in Sources */,
 				69557F2728AFB7560008E44B /* TimeLineModel.swift in Sources */,
+				6964285D28B27BF600DA84FF /* AccountLabelView.swift in Sources */,
 				692C83A028AE473100FB2421 /* TimeLinesView.swift in Sources */,
 				69FD487F28AF2365005EF55E /* RegisterView.swift in Sources */,
 				69557F2B28AFCAC20008E44B /* TimeLinesModel.swift in Sources */,

@@ -20,7 +20,7 @@
         <attribute name="isContentEncrypted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="isMentioned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="parsedContent" attributeType="String" defaultValueString="" allowsCloudEncryption="YES"/>
-        <attribute name="publicKey" optional="YES" attributeType="Binary"/>
+        <attribute name="publicKey" optional="YES" attributeType="String"/>
         <attribute name="sign" optional="YES" attributeType="Binary"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="messages" inverseEntity="Server"/>

@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 extension Message {
-    convenience init(context: NSManagedObjectContext, server: Server, contentHash: Data, content: MessageContent, sign: Data, publicKey: Data) {
+    convenience init(context: NSManagedObjectContext, server: Server, contentHash: Data, content: MessageContent, sign: Data, publicKey: String) {
         self.init(context: context)
         self.server = server
         self.contentHash = contentHash

@@ -8,9 +8,18 @@
 import SwiftUI
 
 
+extension String {
+    func deletingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
+}
+
+
 struct TimeLineView: View {
-    @StateObject var model: TimeLineModel
+    @ObservedObject var model: TimeLineModel
     @Environment(\.managedObjectContext) private var viewContext
+    @FocusState var focus: Bool
     
     @FetchRequest(entity: FetchHistory.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \FetchHistory.createdAt, ascending: false)])
     var fetchHistories: FetchedResults<FetchHistory>
@@ -28,10 +37,15 @@ struct TimeLineView: View {
             } else {
                 List {
                     ForEach(messages) { msg in
-                        TweetView(message: msg)
+                        let account = accounts.filter({ a in a.publicKey! == msg.publicKey! }).first
+                        TweetView(
+                            message: Binding(get: {msg}, set: {v, t in}),
+                            account: Binding<Account?>.init(get: { account }, set: { acc in }))
                             .swipeActions(edge: .trailing) {
                                 NavigationLink {
-                                    Text("av")
+                                    MessageDetailView(
+                                        message: Binding<Message>.init(get: { msg }, set: { m, t in }),
+                                        account: Binding<Account?>.init(get: { account }, set: {acc in}))
                                 } label: {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.red)
@@ -64,9 +78,9 @@ struct TimeLineView: View {
                         }
                     }
                 }
+                .listStyle(.plain)
             }
         }
-        .listStyle(.grouped)
         .onAppear() {
             messages.nsPredicate = NSPredicate(format: "server == %@", model.server)
             fetchHistories.nsPredicate = NSPredicate(format: "server == %@", model.server)

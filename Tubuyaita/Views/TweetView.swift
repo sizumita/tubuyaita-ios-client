@@ -8,26 +8,48 @@
 import SwiftUI
 
 struct TweetView: View {
-    @State var message: Message
+    @Binding var message: Message
+    @Binding var account: Account?
     @State var dateString: String?
 
     var body: some View {
         Grid {
             GridRow {
                 VStack {
-                    Circle()
+                    if account?.iconUrl != nil {
+                        AsyncImage(url: account!.iconUrl) { image in
+                            image
+                                .resizable()
+                                .clipShape(Circle())
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                        } placeholder: {
+                            Circle()
+                                .frame(width: 50, height: 50)
+                        }
+                    } else {
+                        Circle()
+                            .frame(width: 50, height: 50)
+                    }
                     Spacer()
                 }.padding(.top)
                     .gridCellAnchor(.leading)
                     .gridCellColumns(1)
                 VStack {
                     HStack {
-                        Text("@abcd")
-                            .font(.headline)
-                        Text(message.publicKey!.hexa.prefix(16) + "...")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer()
+                        if account?.name != nil {
+                            Text("@\(account!.name!)")
+                                .font(.headline)
+                                .bold()
+                            Text(message.publicKey!.prefix(16) + "...")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        } else {
+                            Text("@0x" + message.publicKey!.prefix(16) + "...")
+                                .font(.headline)
+                                .bold()
+                        }
+                        Spacer(minLength: 0)
                     }.frame(alignment: .leading)
                     HStack {
                         Text(message.parsedContent!)

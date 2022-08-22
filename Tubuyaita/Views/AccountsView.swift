@@ -9,29 +9,44 @@ import SwiftUI
 
 struct AccountsView: View {
     var server: Server
-    @FetchRequest(entity: Account.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Account.name, ascending: true)])
-    var accounts: FetchedResults<Account>
-    @State private var account: Account?
+    @FetchRequest
+    var namedAccounts: FetchedResults<Account>
+    @FetchRequest
+    var unnamedAccounts: FetchedResults<Account>
+    @State private var path: [Account] = []
+
+    init(server: Server) {
+        self.server = server
+        self._namedAccounts = FetchRequest<Account>(entity: Account.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Account.name, ascending: true)], predicate: NSPredicate(format: "name != nil && server == %@", server))
+        self._unnamedAccounts = FetchRequest<Account>(entity: Account.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Account.name, ascending: true)], predicate: NSPredicate(format: "name == nil && server == %@", server))
+    }
 
     var body: some View {
-        NavigationSplitView {
-            List(accounts, selection: $account) { account in
-                NavigationLink(value: account) {
-                    Text(account.name ?? account.publicKey!)
+        NavigationStack(path: $path) {
+            Form {
+                Section("名前設定済み") {
+                    List(namedAccounts) { account in
+                        NavigationLink(value: account) {
+                            AccountLabelView(account: Binding(get: {
+                                account
+                            }, set: {x in}))
+                        }
+                    }
+                }
+                Section("名前なし") {
+                    List(unnamedAccounts) { account in
+                        NavigationLink(value: account) {
+                            AccountLabelView(account: Binding(get: {
+                                account
+                            }, set: {x in}))
+                        }
+                    }
                 }
             }.navigationTitle("アカウント一覧")
-        } detail: {
-            if account != nil {
-                AccountDetailView(account: .init(get: {
-                    account!
-                }, set: { acc in
-                    account = acc
-                }))
-            } else {
-                Text("アカウントを選択してください")
-            }
-        }.onAppear() {
-            accounts.nsPredicate = NSPredicate(format: "server == %@", server)
+        }.navigationDestination(for: Account.self) { account in
+            AccountDetailView(account: .init(get: {
+                account
+            }, set: { acc in }), path: $path)
         }
     }
 }

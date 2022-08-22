@@ -121,8 +121,7 @@ class PhoenixConnection {
             let contentHash = Data(Array(expectedHash))
             let timestamp = Date(milliseconds: Int64(content.timestamp))
             let sign = Data(sodium.utils.hex2bin(msg.payload["sign"]! as! String)!)
-            let publicKey = Data(sodium.utils.hex2bin(msg.payload["publicKey"]! as! String)!)
-            let message = Message(context: context, server: server, contentHash: contentHash, content: content, sign: sign, publicKey: publicKey)
+            let message = Message(context: context, server: server, contentHash: contentHash, content: content, sign: sign, publicKey: msg.payload["publicKey"]! as! String)
             
             if (getAccount(publicKey: msg.payload["publicKey"]! as! String) == nil) {
                 let account = Account(context: context)
