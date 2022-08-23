@@ -66,7 +66,7 @@ struct TimeLinesView: View {
                 }
             }
         }.fullScreenCover(isPresented: $model.isSettingPresented) {
-            PreferenceView(isPresented: $model.isSettingPresented)
+            PreferenceView(isPresented: $model.isSettingPresented, selectedServer: $model.selectedServer)
         }
         .onAppear() {
             model.changeSelectedServer(server: servers.first)

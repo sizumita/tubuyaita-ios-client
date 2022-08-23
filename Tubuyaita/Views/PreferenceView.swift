@@ -10,6 +10,8 @@ import CoreData
 
 struct PreferenceView: View {
     @Binding var isPresented: Bool
+    @Binding var selectedServer: Server?
+    
     @EnvironmentObject var account: AccountStore
     @Environment(\.managedObjectContext) private var viewContext
     @State private var isAddServerPresented = false
@@ -27,15 +29,6 @@ struct PreferenceView: View {
                             NavigationLink {
                                 Form {
                                     Section("設定") {
-                                        Button("\(server.messages?.count ?? 0)個のメッセージデータを削除") {
-                                            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Message")
-                                            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                                            try? viewContext.execute(deleteRequest)
-                                            let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "FetchHistory")
-                                            let deleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
-                                            try? viewContext.execute(deleteRequest2)
-
-                                        }.foregroundColor(.red)
                                     }
                                 }
                                     .navigationTitle(server.address!)
@@ -44,9 +37,23 @@ struct PreferenceView: View {
                             }
                         }.onDelete { offset in
                             offset.forEach { i in
+                                selectedServer = nil
+                                servers[i].accounts?.forEach({ elem in
+                                    viewContext.delete(elem as! NSManagedObject)
+                                })
+                                servers[i].messages?.forEach({ elem in
+                                    viewContext.delete(elem as! NSManagedObject)
+                                })
+                                servers[i].fetchHistories?.forEach({ elem in
+                                    viewContext.delete(elem as! NSManagedObject)
+                                })
                                 viewContext.delete(servers[i])
                             }
                             try? viewContext.save()
+                            // 終了しないとselectedServer = nilしたのにnilにassertion errorが出ちゃう
+                            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                                UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                            }
                         }
                     }
                 }
@@ -81,7 +88,8 @@ struct PreferenceView: View {
 
 struct PreferenceView_Previews: PreviewProvider {
     @State static var isPresented = true
+    @State static var selectedServer: Server?
     static var previews: some View {
-        PreferenceView(isPresented: $isPresented)
+        PreferenceView(isPresented: $isPresented, selectedServer: $selectedServer)
     }
 }
