@@ -18,18 +18,10 @@ struct ServerView: View {
         }
         .navigationBarBackButtonHidden()
         .navigationTitle(model.server.address!)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Menu {
-                    Button {
-                        model.path.removeAll()
-                    } label: {
-                        Text("サーバー一覧")
-                    }
-
-                } label: {
-                    Image(systemName: "globe")
-                }
+                ServerSelectMenuView(model: .init(path: $model.path))
             }
         }
     }

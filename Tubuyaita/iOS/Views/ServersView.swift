@@ -26,6 +26,30 @@ struct ServersView: View {
             .navigationDestination(for: Server.self) { server in
                 ServerView(model: ServerModel(server: server, path: $model.path))
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        model.isCreateServerPresented.toggle()
+                    } label: {
+                        Text("追加")
+                            .bold()
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        model.isPreferencePresented.toggle()
+                    } label: {
+                        Text("設定")
+                            .bold()
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $model.isCreateServerPresented) {
+            AddServerView()
+        }
+        .fullScreenCover(isPresented: $model.isPreferencePresented) {
+            PreferenceView()
         }
     }
 }
