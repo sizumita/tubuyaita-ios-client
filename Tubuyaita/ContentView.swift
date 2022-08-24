@@ -9,8 +9,6 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var account: AccountStore
 
     var body: some View {
@@ -19,7 +17,7 @@ struct ContentView: View {
         } else {
             ZStack {
                 #if os(iOS)
-                TimeLinesView()
+                ServersView()
                 #else
                 Text("abc")
                 #endif

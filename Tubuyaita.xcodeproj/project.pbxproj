@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690AECE728AF40F9005BB646 /* AddServerView.swift */; };
+		69105E5128B5AE7B0048AED3 /* ServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5028B5AE7B0048AED3 /* ServersView.swift */; };
+		69105E5328B5B0EB0048AED3 /* ServersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5228B5B0EB0048AED3 /* ServersModel.swift */; };
+		69105E5528B5B7CF0048AED3 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5428B5B7CF0048AED3 /* ServerView.swift */; };
+		69105E5728B5B7E20048AED3 /* ServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5628B5B7E20048AED3 /* ServerModel.swift */; };
 		692542BD28AE80AD00A754C6 /* SwiftPhoenixClient in Frameworks */ = {isa = PBXBuildFile; productRef = 692542BC28AE80AD00A754C6 /* SwiftPhoenixClient */; };
 		692C836D28AE3FD900FB2421 /* TubuyaitaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836C28AE3FD900FB2421 /* TubuyaitaApp.swift */; };
 		692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836E28AE3FD900FB2421 /* Persistence.swift */; };
@@ -62,6 +66,10 @@
 
 /* Begin PBXFileReference section */
 		690AECE728AF40F9005BB646 /* AddServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
+		69105E5028B5AE7B0048AED3 /* ServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersView.swift; sourceTree = "<group>"; };
+		69105E5228B5B0EB0048AED3 /* ServersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersModel.swift; sourceTree = "<group>"; };
+		69105E5428B5B7CF0048AED3 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
+		69105E5628B5B7E20048AED3 /* ServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerModel.swift; sourceTree = "<group>"; };
 		692C836928AE3FD900FB2421 /* Tubuyaita.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tubuyaita.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		692C836C28AE3FD900FB2421 /* TubuyaitaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TubuyaitaApp.swift; sourceTree = "<group>"; };
 		692C836E28AE3FD900FB2421 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -203,8 +211,10 @@
 		692C839E28AE471900FB2421 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				69105E5028B5AE7B0048AED3 /* ServersView.swift */,
 				692C839F28AE473100FB2421 /* TimeLinesView.swift */,
 				69515DF328AF5BF60068CE86 /* TimeLineView.swift */,
+				69105E5428B5B7CF0048AED3 /* ServerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -234,6 +244,8 @@
 				69557F2828AFB80C0008E44B /* PhoenixConnection.swift */,
 				69557F2A28AFCAC20008E44B /* TimeLinesModel.swift */,
 				69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */,
+				69105E5228B5B0EB0048AED3 /* ServersModel.swift */,
+				69105E5628B5B7E20048AED3 /* ServerModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -398,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				692C836D28AE3FD900FB2421 /* TubuyaitaApp.swift in Sources */,
+				69105E5328B5B0EB0048AED3 /* ServersModel.swift in Sources */,
 				69557F2928AFB80C0008E44B /* PhoenixConnection.swift in Sources */,
 				690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */,
 				692C837228AE3FD900FB2421 /* Tubuyaita.xcdatamodeld in Sources */,
@@ -408,10 +421,13 @@
 				692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */,
 				6964286228B3375C00DA84FF /* MessageDetailView.swift in Sources */,
 				69557F2728AFB7560008E44B /* TimeLineModel.swift in Sources */,
+				69105E5128B5AE7B0048AED3 /* ServersView.swift in Sources */,
+				69105E5728B5B7E20048AED3 /* ServerModel.swift in Sources */,
 				6964285D28B27BF600DA84FF /* AccountLabelView.swift in Sources */,
 				692C83A028AE473100FB2421 /* TimeLinesView.swift in Sources */,
 				69FD487F28AF2365005EF55E /* RegisterView.swift in Sources */,
 				69557F2B28AFCAC20008E44B /* TimeLinesModel.swift in Sources */,
+				69105E5528B5B7CF0048AED3 /* ServerView.swift in Sources */,
 				6953BCED28B260E400EC924F /* AccountsView.swift in Sources */,
 				69515DF428AF5BF60068CE86 /* TimeLineView.swift in Sources */,
 				69557F2D28AFCFF60008E44B /* CreateMessageModel.swift in Sources */,
