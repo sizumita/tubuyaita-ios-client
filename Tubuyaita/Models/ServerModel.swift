@@ -12,10 +12,8 @@ import SwiftUI
 class ServerModel : ObservableObject {
     var server: Server
     @Published var tab: Int = 0
-    var ts: Int
 
     init(server: Server) {
         self.server = server
-        self.ts = Int.random(in: 0...100)
     }
 }

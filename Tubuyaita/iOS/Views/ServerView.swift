@@ -14,7 +14,7 @@ struct ServerView: View {
         ZStack {
             TabView(selection: $model.tab) {
 //                TimeLineView(model: .init(server: model.server))
-                Text("abvc")
+                TimeLineView(task: .init(server: model.server))
                     .tabItem {
                         Image(systemName: "bubble.left.fill")
                     }
@@ -32,9 +32,6 @@ struct ServerView: View {
         .navigationBarBackButtonHidden()
         .navigationTitle(model.server.address!)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear() {
-            print(model.ts)
-        }
         .onDisappear() {
             print("disappear")
         }

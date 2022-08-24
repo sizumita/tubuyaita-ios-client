@@ -18,6 +18,7 @@ struct ServerSelectMenuView: View {
         Menu {
             ForEach(servers) { server in
                 Button {
+                    // NOTE: ここでServerViewのWebsocketを消し飛ばしたい
                     router.path.append(.server(server))
                 } label: {
                     Text(server.address!)
