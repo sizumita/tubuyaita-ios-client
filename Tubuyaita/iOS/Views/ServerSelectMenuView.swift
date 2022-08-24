@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ServerSelectMenuView: View {
-    @ObservedObject var model: ServerSelectMenuModel
+    @StateObject var model: ServerSelectMenuModel
+    @EnvironmentObject var router: RouterNavigationPath
     
     @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
     var servers: FetchedResults<Server>
@@ -17,26 +18,19 @@ struct ServerSelectMenuView: View {
         Menu {
             ForEach(servers) { server in
                 Button {
-                    model.path.append(server)
+                    router.path.append(.server(server))
                 } label: {
                     Text(server.address!)
                 }
-                .disabled(model.path.last == server)
+                .disabled(model.server == server)
             }
             Button {
-                model.path.removeAll()
+                router.path.removeLast(router.path.count)
             } label: {
                 Text("サーバー一覧")
             }
         } label: {
             Image(systemName: "globe")
         }
-    }
-}
-
-struct ServerSelectMenuView_Previews: PreviewProvider {
-    @State static var path: [Server] = []
-    static var previews: some View {
-        ServerSelectMenuView(model: ServerSelectMenuModel.init(path: $path))
     }
 }

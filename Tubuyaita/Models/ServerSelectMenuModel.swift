@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class ServerSelectMenuModel : ObservableObject {
-    @Binding var path: [Server]
+    @Binding var server: Server
     
-    init(path: Binding<[Server]>) {
-        self._path = path
+    init(server: Binding<Server>) {
+        self._server = server
     }
 }

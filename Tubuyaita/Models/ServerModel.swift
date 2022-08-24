@@ -11,10 +11,11 @@ import SwiftUI
 
 class ServerModel : ObservableObject {
     var server: Server
-    @Binding var path: [Server]
-    
-    init(server: Server, path: Binding<[Server]>) {
+    @Published var tab: Int = 0
+    var ts: Int
+
+    init(server: Server) {
         self.server = server
-        self._path = path
+        self.ts = Int.random(in: 0...100)
     }
 }

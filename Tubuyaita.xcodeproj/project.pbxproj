@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690AECE728AF40F9005BB646 /* AddServerView.swift */; };
+		690B8ECE28B5CE6C00C24506 /* AccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B8ECD28B5CE6C00C24506 /* AccountDetailModel.swift */; };
 		69105E5128B5AE7B0048AED3 /* ServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5028B5AE7B0048AED3 /* ServersView.swift */; };
 		69105E5328B5B0EB0048AED3 /* ServersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5228B5B0EB0048AED3 /* ServersModel.swift */; };
 		69105E5528B5B7CF0048AED3 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5428B5B7CF0048AED3 /* ServerView.swift */; };
 		69105E5728B5B7E20048AED3 /* ServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5628B5B7E20048AED3 /* ServerModel.swift */; };
 		69105E5928B5C1760048AED3 /* ServerSelectMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5828B5C1760048AED3 /* ServerSelectMenuView.swift */; };
 		69105E5B28B5C18F0048AED3 /* ServerSelectMenuModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5A28B5C18F0048AED3 /* ServerSelectMenuModel.swift */; };
+		69105E5D28B5C9930048AED3 /* NewMessageButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5C28B5C9930048AED3 /* NewMessageButtonView.swift */; };
 		692542BD28AE80AD00A754C6 /* SwiftPhoenixClient in Frameworks */ = {isa = PBXBuildFile; productRef = 692542BC28AE80AD00A754C6 /* SwiftPhoenixClient */; };
 		692C836D28AE3FD900FB2421 /* TubuyaitaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836C28AE3FD900FB2421 /* TubuyaitaApp.swift */; };
 		692C836F28AE3FD900FB2421 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692C836E28AE3FD900FB2421 /* Persistence.swift */; };
@@ -68,12 +70,14 @@
 
 /* Begin PBXFileReference section */
 		690AECE728AF40F9005BB646 /* AddServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
+		690B8ECD28B5CE6C00C24506 /* AccountDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailModel.swift; sourceTree = "<group>"; };
 		69105E5028B5AE7B0048AED3 /* ServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersView.swift; sourceTree = "<group>"; };
 		69105E5228B5B0EB0048AED3 /* ServersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersModel.swift; sourceTree = "<group>"; };
 		69105E5428B5B7CF0048AED3 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
 		69105E5628B5B7E20048AED3 /* ServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerModel.swift; sourceTree = "<group>"; };
 		69105E5828B5C1760048AED3 /* ServerSelectMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectMenuView.swift; sourceTree = "<group>"; };
 		69105E5A28B5C18F0048AED3 /* ServerSelectMenuModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectMenuModel.swift; sourceTree = "<group>"; };
+		69105E5C28B5C9930048AED3 /* NewMessageButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageButtonView.swift; sourceTree = "<group>"; };
 		692C836928AE3FD900FB2421 /* Tubuyaita.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tubuyaita.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		692C836C28AE3FD900FB2421 /* TubuyaitaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TubuyaitaApp.swift; sourceTree = "<group>"; };
 		692C836E28AE3FD900FB2421 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
@@ -220,6 +224,7 @@
 				69515DF328AF5BF60068CE86 /* TimeLineView.swift */,
 				69105E5428B5B7CF0048AED3 /* ServerView.swift */,
 				69105E5828B5C1760048AED3 /* ServerSelectMenuView.swift */,
+				69105E5C28B5C9930048AED3 /* NewMessageButtonView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -252,6 +257,7 @@
 				69105E5228B5B0EB0048AED3 /* ServersModel.swift */,
 				69105E5628B5B7E20048AED3 /* ServerModel.swift */,
 				69105E5A28B5C18F0048AED3 /* ServerSelectMenuModel.swift */,
+				690B8ECD28B5CE6C00C24506 /* AccountDetailModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -435,6 +441,7 @@
 				69FD487F28AF2365005EF55E /* RegisterView.swift in Sources */,
 				69557F2B28AFCAC20008E44B /* TimeLinesModel.swift in Sources */,
 				69105E5528B5B7CF0048AED3 /* ServerView.swift in Sources */,
+				690B8ECE28B5CE6C00C24506 /* AccountDetailModel.swift in Sources */,
 				6953BCED28B260E400EC924F /* AccountsView.swift in Sources */,
 				69105E5928B5C1760048AED3 /* ServerSelectMenuView.swift in Sources */,
 				69515DF428AF5BF60068CE86 /* TimeLineView.swift in Sources */,
@@ -442,6 +449,7 @@
 				692C83A428AE4A5C00FB2421 /* PreferenceView.swift in Sources */,
 				69FD488328AF2A5E005EF55E /* Message.swift in Sources */,
 				69B0F7B228B1DC24000A98FB /* Message+Extension.swift in Sources */,
+				69105E5D28B5C9930048AED3 /* NewMessageButtonView.swift in Sources */,
 				69FD488128AF27F4005EF55E /* TweetView.swift in Sources */,
 				69FD487828AF13EE005EF55E /* AccountStore.swift in Sources */,
 				6953BCEB28B247AF00EC924F /* Sodium+Extension.swift in Sources */,

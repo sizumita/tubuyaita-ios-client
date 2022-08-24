@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct AccountDetailView: View {
-    @Binding var account: Account
+    @StateObject var model: AccountDetailModel
+    @EnvironmentObject var router: RouterNavigationPath
     @State private var edited = false
     @State private var name: String = ""
     @State private var iconUrl: String = ""
-    @Binding var path: [Account]
     @Environment(\.managedObjectContext) private var viewContext
 
     var body: some View {
@@ -20,7 +20,7 @@ struct AccountDetailView: View {
             Section("基本情報") {
                 TextField("アカウント名", text: $name)
                 TextField("アイコンURL", text: $iconUrl)
-                ShareLink("公開鍵: 0x\(account.publicKey!)", item: "0x\(account.publicKey!)")
+                ShareLink("公開鍵: 0x\(model.account.publicKey!)", item: "0x\(model.account.publicKey!)")
             }
 //            Section {
 //                Button {
@@ -50,28 +50,28 @@ struct AccountDetailView: View {
             }
 
         }.onAppear() {
-            name = account.name ?? ""
-            iconUrl = account.iconUrl?.absoluteString ?? ""
+            name = model.account.name ?? ""
+            iconUrl = model.account.iconUrl?.absoluteString ?? ""
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("保存") {
-                    account.name = name == "" ? nil : name
-                    account.iconUrl = URL(string: iconUrl)
+                    model.account.name = name == "" ? nil : name
+                    model.account.iconUrl = URL(string: iconUrl)
                     try? viewContext.save()
                     edited = false
-                    path.removeAll()
+                    router.path.removeLast()
                 }.disabled(!edited)
             }
         }
-        .navigationTitle(Text(account.name ?? "0x\(account.publicKey!.prefix(16))..."))
+        .navigationTitle(Text(model.account.name ?? "0x\(model.account.publicKey!.prefix(16))..."))
         .onChange(of: name) { newValue in
-            if newValue != account.name ?? "" {
+            if newValue != model.account.name ?? "" {
                 edited = true
             }
         }
         .onChange(of: iconUrl) { newValue in
-            if URL(string: newValue) != account.iconUrl {
+            if URL(string: newValue) != model.account.iconUrl {
                 edited = true
             }
         }

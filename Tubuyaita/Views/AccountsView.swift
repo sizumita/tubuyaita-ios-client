@@ -22,31 +22,26 @@ struct AccountsView: View {
     }
 
     var body: some View {
-        NavigationStack(path: $path) {
-            Form {
-                Section("名前設定済み") {
-                    List(namedAccounts) { account in
-                        NavigationLink(value: account) {
-                            AccountLabelView(account: Binding(get: {
-                                account
-                            }, set: {x in}))
-                        }
+        Form {
+            Section("名前設定済み") {
+                List(namedAccounts) { account in
+                    NavigationLink(value: Path.account(account)) {
+                        AccountLabelView(account: Binding(get: {
+                            account
+                        }, set: {x in}))
                     }
                 }
-                Section("名前なし") {
-                    List(unnamedAccounts) { account in
-                        NavigationLink(value: account) {
-                            AccountLabelView(account: Binding(get: {
-                                account
-                            }, set: {x in}))
-                        }
+            }
+            Section("名前なし") {
+                List(unnamedAccounts) { account in
+                    NavigationLink(value: Path.account(account)) {
+                        AccountLabelView(account: Binding(get: {
+                            account
+                        }, set: {x in}))
                     }
                 }
-            }.navigationTitle("アカウント一覧")
-        }.navigationDestination(for: Account.self) { account in
-            AccountDetailView(account: .init(get: {
-                account
-            }, set: { acc in }), path: $path)
+            }
         }
+        .navigationTitle("アカウント一覧")
     }
 }

@@ -33,7 +33,7 @@ struct TimeLinesView: View {
             ZStack {
                 if model.selectedServer != nil {
                     TabView(selection: $model.selectedTab) {
-                        TimeLineView(model: TimeLineModel.init(server: model.selectedServer!))
+                        Text("")
                         .tabItem {
                             Image(systemName: "bubble.left.fill")
                         }.tag(0)
