@@ -28,7 +28,10 @@ struct ReceivedMessage : Codable {
 
 class TimeLineModel : ObservableObject {
     var server: Server
-    @Published var messages: [TubuyaitaMessage] = []
+    /// Websocket経由で受け取ったメッセージ。最古->最新
+    @Published var fetchedMessages: [TubuyaitaMessage] = []
+    /// HTTP経由で取得したメッセージ。最新->最古
+    @Published var receivedMessages: [TubuyaitaMessage] = []
     @Published var isInitialized = false
     
     init(server: Server) {

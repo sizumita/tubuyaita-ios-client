@@ -35,4 +35,13 @@ extension Sodium {
         }
         return curve25519SecretKey
     }
+
+    func signVerifyDetached(publicKey: Bytes, sign: Bytes, message: Data) -> Bool {
+        guard message.withUnsafeBytes({ p in
+            crypto_sign_verify_detached(sign, p, UInt64(message.count), publicKey)
+        }) == 0 else {
+            return false
+        }
+        return true
+    }
 }

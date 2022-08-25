@@ -17,24 +17,41 @@ extension String {
 
 
 struct TimeLineView: View {
+    @StateObject var model: TimeLineModel
     @StateObject var task: TimeLineTask
-    @State var i: Double = 0
+
+    init(server: Server) {
+        let timeLineModel = TimeLineModel(server: server)
+        _model = StateObject(wrappedValue: timeLineModel)
+        _task = StateObject(wrappedValue: TimeLineTask(model: timeLineModel))
+    }
 
     var body: some View {
         Group {
-            if task.model.isInitialized {
-                List {
-                    ForEach(task.model.messages) { message in
-                        Text(message.parsedContent)
-                    }
+            ZStack {
+                if model.isInitialized {
+                    List {
+                        // Websocket経由で受け取ったメッセージ。最古->最新
+                        ForEach(model.receivedMessages.reversed()) { message in
+                            TweetView(message: message)
+                        }
+                        // HTTP経由で取得したメッセージ。最新->最古
+                        ForEach(model.fetchedMessages) { message in
+                            Text(message.parsedContent)
+                        }
+                    }.listStyle(.plain)
+                } else {
+                    Spinner()
                 }
-            } else {
-                Spinner()
             }
+            .onAppear {
+                print("aaa")
+                task.initialize()
+            }
+                    .onDisappear {
+                        task.disconnect()
+                    }
         }
-        .navigationTitle(task.model.server.address!)
-        .onAppear() {
-            task.initializeMessages()
-        }
+        .navigationTitle(model.server.address!)
     }
 }

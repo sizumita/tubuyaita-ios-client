@@ -21,7 +21,7 @@ struct MessageDetailView: View {
     var body: some View {
         Form {
             Section {
-                TweetView(message: $message, account: $account)
+//                TweetView(message: $message, account: $account)
             }
             Section("アカウント") {
                 TextField("名前", text: $accountName)

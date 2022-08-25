@@ -15,24 +15,6 @@ import CoreData
 import UIKit
 
 
-struct Retweet : Codable {
-    var host: String
-    var port: String
-    var id: String
-}
-
-struct Content : Codable {
-    var body: Optional<String>
-    var retweet: Optional<Retweet>
-}
-
-struct EncryptedContent : Codable {
-    // 文字列になってるContent
-    var content: String
-    var receiverPublicKey: String
-    var nonce: String
-}
-
 struct MessageContent : Codable {
     // if encrypted contents
     var contents: Optional<[EncryptedContent]>

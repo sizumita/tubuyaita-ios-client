@@ -7,12 +7,30 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 class TimeLineTask : ObservableObject {
-    @Published var model: TimeLineModel
+    var model: TimeLineModel
+    private var repository: TimeLineRepository
+    private var cancel: AnyCancellable?
 
-    init(server: Server) {
-        self.model = TimeLineModel(server: server)
+    init(model: TimeLineModel) {
+        self.model = model
+        repository = .init()
+    }
+
+    func initialize() {
+        cancel = repository.messageSubject.sink { message in
+            DispatchQueue.main.async {
+                self.model.receivedMessages.append(message)
+            }
+        }
+        repository.connect(server: model.server)
+        initializeMessages()
+    }
+
+    func disconnect() {
+        cancel?.cancel()
     }
 
     /// Load old messages
@@ -21,7 +39,7 @@ class TimeLineTask : ObservableObject {
 
     }
 
-    func initializeMessages() {
+    private func initializeMessages() {
         loadOldMessages()
         model.isInitialized = true
     }
