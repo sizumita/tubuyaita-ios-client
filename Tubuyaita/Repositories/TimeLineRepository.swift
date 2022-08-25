@@ -17,6 +17,27 @@ enum SocketStatus {
     case error(Error)
 }
 
+enum FetchErrorStatus : Error {
+    case httpRequestFailed
+    case jsonParseFailed
+    case invalidHexString
+    case verifyFailed
+}
+
+struct Cursor : Codable {
+    /// Timestamp
+    var t: Int
+    /// Version
+    var v: Int
+    /// Hash
+    var h: String
+
+    func json() -> Data {
+        let encoder = JSONEncoder()
+        return try! encoder.encode(self)
+    }
+}
+
 class TimeLineRepository : ObservableObject {
     private var socket: Socket?
     private let sodium = Sodium()
@@ -94,23 +115,7 @@ class TimeLineRepository : ObservableObject {
             return
         }
 
-        let timestamp = Date(milliseconds: Int64(phoenixMessageContents.timestamp))
-        if phoenixMessageContents.body == nil {
-            // is encrypted
-            // TODO Improve
-        } else {
-            // is normal
-            let message = TubuyaitaMessage(
-                    id: expectedHash.hexa,
-                    isContentEncrypted: false,
-                    isMentioned: getIsMentioned(body: phoenixMessageContents.body!),
-                    parsedContent: phoenixMessageContents.body!,
-                    publicKey: publicKey,
-                    timestamp: timestamp,
-                    account: getAccount(publicKey: publicKey, server: server)
-            )
-            messageSubject.send(message)
-        }
+        messageSubject.send(processMessage(server: server, contents: phoenixMessageContents, publicKey: publicKey, id: expectedHash.hexa))
     }
 
     private func getIsMentioned(body: String) -> Bool {
@@ -134,7 +139,77 @@ class TimeLineRepository : ObservableObject {
     /// - Parameters:
     ///   - server: Server
     ///   - cursor: Cursor
-    func fetchMessages(server: Server, cursor: Cursor) {
+    func fetchMessages(server: Server, cursor: Cursor?) async -> Result<[TubuyaitaMessage], FetchErrorStatus> {
+        var url: URL!
+        if cursor != nil {
+            let base64Cursor = cursor!.json().base64EncodedString()
 
+            url = URL(string: String(format: "http://%@:%d/api/v1/messages?cursor=%@", server.address!, server.port, base64Cursor))!
+        } else {
+            url = URL(string: String(format: "http://%@:%d/api/v1/messages", server.address!, server.port))!
+        }
+        guard let (data, response) = try? await URLSession.shared.data(from: url) else {
+            return .failure(.httpRequestFailed)
+        }
+        let decoder = JSONDecoder()
+        guard var messages: [ReceivedMessage] = try? decoder.decode([ReceivedMessage].self, from: data) else {
+            return .failure(.jsonParseFailed)
+        }
+        messages.sort { (v, v2) in
+            v.created_at > v2.created_at
+        }
+
+        var parsedMessages: [TubuyaitaMessage] = []
+
+        for message in messages {
+            let expectedHash = Data(Array(SHA512.hash(data: message.raw_message.data(using: .utf8)!)))
+            // MARK: verify
+            guard let rawPublicKey = sodium.utils.hex2bin(message.public_key) else {
+                return .failure(.invalidHexString)
+            }
+            guard let rawSign = sodium.utils.hex2bin(message.sign) else {
+                return .failure(.invalidHexString)
+            }
+            if !sodium.signVerifyDetached(publicKey: rawPublicKey, sign: rawSign, message: expectedHash) {
+                return .failure(.verifyFailed)
+            }
+            guard let phoenixMessageContents = PhoenixMessageContents(json: message.raw_message.data(using: .utf8)!) else {
+                return .failure(.jsonParseFailed)
+            }
+            parsedMessages.append(processMessage(server: server, contents: phoenixMessageContents, publicKey: message.public_key, id: expectedHash.hexa))
+        }
+        return .success(parsedMessages)
+    }
+
+    /// Shared
+
+    private func processMessage(server: Server, contents: PhoenixMessageContents, publicKey: String, id: String) -> TubuyaitaMessage {
+        let timestamp = Date(milliseconds: Int64(contents.timestamp))
+        if contents.body == nil {
+            // is encrypted
+            // TODO Improve
+            let message = TubuyaitaMessage(
+                    id: id,
+                    isContentEncrypted: false,
+                    isMentioned: getIsMentioned(body: ""),
+                    parsedContent: "Encrypted",
+                    publicKey: publicKey,
+                    timestamp: timestamp,
+                    account: getAccount(publicKey: publicKey, server: server)
+            )
+            return message
+        } else {
+            // is normal
+            let message = TubuyaitaMessage(
+                    id: id,
+                    isContentEncrypted: false,
+                    isMentioned: getIsMentioned(body: contents.body!),
+                    parsedContent: contents.body!,
+                    publicKey: publicKey,
+                    timestamp: timestamp,
+                    account: getAccount(publicKey: publicKey, server: server)
+            )
+            return message
+        }
     }
 }

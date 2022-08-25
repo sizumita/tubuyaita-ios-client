@@ -12,7 +12,7 @@ extension Date {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
     }
     
-    func toUnixTimeMilliseconds() -> Int64 {
-        return Int64((self.timeIntervalSince1970 * 1000.0).rounded())
+    func toUnixTimeMilliseconds() -> Int {
+        Int((self.timeIntervalSince1970 * 1000.0).rounded())
     }
 }

@@ -33,14 +33,36 @@ class TimeLineTask : ObservableObject {
         cancel?.cancel()
     }
 
+    func loadHistory() {
+        Task {
+            await loadOldMessages()
+        }
+    }
+
     /// Load old messages
     /// - Parameter n: message count
-    func loadOldMessages(_ n: Int = 100) {
-
+    /// - Parameter cursor: Cursor
+    private func loadOldMessages(_ n: Int = 100) async {
+        var cursor: Cursor?
+        if !model.fetchedMessages.isEmpty {
+            cursor = .init(t: model.fetchedMessages.last!.timestamp.toUnixTimeMilliseconds(), v: 1, h: model.fetchedMessages.last!.id)
+        }
+        switch await repository.fetchMessages(server: model.server, cursor: cursor) {
+        case .success(let messages):
+            DispatchQueue.main.async {
+                self.model.fetchedMessages.append(contentsOf: messages)
+            }
+        case .failure(let err):
+            break
+        }
     }
 
     private func initializeMessages() {
-        loadOldMessages()
-        model.isInitialized = true
+        Task {
+            await loadOldMessages()
+            DispatchQueue.main.async {
+                self.model.isInitialized = true
+            }
+        }
     }
 }

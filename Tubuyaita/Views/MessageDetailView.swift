@@ -11,8 +11,7 @@ struct MessageDetailView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @FocusState var focus: Bool
 
-    @Binding var message: Message
-    @Binding var account: Account?
+    @Binding var message: TubuyaitaMessage
 
     @State var accountName = ""
     @State var accountIconUrl = ""
@@ -21,14 +20,14 @@ struct MessageDetailView: View {
     var body: some View {
         Form {
             Section {
-//                TweetView(message: $message, account: $account)
+                TweetView(message: message)
             }
             Section("アカウント") {
                 TextField("名前", text: $accountName)
                     .focused($focus)
                 TextField("アイコンURL", text: $accountIconUrl)
                     .focused($focus)
-                ShareLink("公開鍵: 0x\(message.publicKey!)", item: "0x\(message.publicKey!)")
+                ShareLink("公開鍵: 0x\(message.publicKey)", item: "0x\(message.publicKey)")
             }
 //            Section {
 //                Button {
@@ -44,16 +43,16 @@ struct MessageDetailView: View {
                 Button(action: {}, label: {Text("ユーザーをブロックする").foregroundColor(.red).bold()})
             }
         }
-        .navigationTitle(account?.name ?? ("0x" + message.publicKey!.prefix(16) + "..."))
+        .navigationTitle(message.account?.name ?? ("0x" + message.publicKey.prefix(16) + "..."))
         .onAppear() {
-            accountName = account?.name ?? ""
-            accountIconUrl = account?.iconUrl?.absoluteString ?? ""
+            accountName = message.account?.name ?? ""
+            accountIconUrl = message.account?.iconUrl?.absoluteString ?? ""
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("保存") {
-                    account?.name = accountName == "" ? nil : accountName
-                    account?.iconUrl = URL(string: accountIconUrl)
+                    message.account?.name = accountName == "" ? nil : accountName
+                    message.account?.iconUrl = URL(string: accountIconUrl)
                     try? viewContext.save()
                     edited = false
                 }.disabled(!edited)
@@ -67,12 +66,12 @@ struct MessageDetailView: View {
             }
         }
         .onChange(of: accountName) { newValue in
-            if newValue != account?.name ?? "" {
+            if newValue != message.account?.name ?? "" {
                 edited = true
             }
         }
         .onChange(of: accountIconUrl) { newValue in
-            if URL(string: newValue) != account?.iconUrl {
+            if URL(string: newValue) != message.account?.iconUrl {
                 edited = true
             }
         }.navigationBarBackButtonHidden(focus)

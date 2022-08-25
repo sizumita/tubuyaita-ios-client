@@ -12,19 +12,6 @@ import Sodium
 import CryptoKit
 import CoreData
 
-struct Cursor : Codable {
-    var t: Int64
-    var v: Int
-    var h: String
-}
-
-struct ReceivedMessage : Codable {
-    var contents_hash: String
-    var created_at: Int64
-    var public_key: String
-    var raw_message: String
-    var sign: String
-}
 
 class TimeLineModel : ObservableObject {
     var server: Server

@@ -36,7 +36,6 @@
 		695478BE28B26AF700FEA9E0 /* AccountDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 695478BD28B26AF700FEA9E0 /* AccountDetailView.swift */; };
 		69557F2328AF85C60008E44B /* CreateMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2228AF85C60008E44B /* CreateMessageView.swift */; };
 		69557F2728AFB7560008E44B /* TimeLineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2628AFB7560008E44B /* TimeLineModel.swift */; };
-		69557F2928AFB80C0008E44B /* PhoenixConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2828AFB80C0008E44B /* PhoenixConnection.swift */; };
 		69557F2D28AFCFF60008E44B /* CreateMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */; };
 		6964285D28B27BF600DA84FF /* AccountLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6964285C28B27BF600DA84FF /* AccountLabelView.swift */; };
 		6964286028B31D8B00DA84FF /* MessageSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6964285F28B31D8B00DA84FF /* MessageSender.swift */; };
@@ -103,7 +102,6 @@
 		695478BD28B26AF700FEA9E0 /* AccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailView.swift; sourceTree = "<group>"; };
 		69557F2228AF85C60008E44B /* CreateMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessageView.swift; sourceTree = "<group>"; };
 		69557F2628AFB7560008E44B /* TimeLineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineModel.swift; sourceTree = "<group>"; };
-		69557F2828AFB80C0008E44B /* PhoenixConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoenixConnection.swift; sourceTree = "<group>"; };
 		69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMessageModel.swift; sourceTree = "<group>"; };
 		6964285C28B27BF600DA84FF /* AccountLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountLabelView.swift; sourceTree = "<group>"; };
 		6964285F28B31D8B00DA84FF /* MessageSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSender.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 			children = (
 				69FD487728AF13EE005EF55E /* AccountStore.swift */,
 				69557F2628AFB7560008E44B /* TimeLineModel.swift */,
-				69557F2828AFB80C0008E44B /* PhoenixConnection.swift */,
 				69557F2C28AFCFF60008E44B /* CreateMessageModel.swift */,
 				69105E5228B5B0EB0048AED3 /* ServersModel.swift */,
 				69105E5628B5B7E20048AED3 /* ServerModel.swift */,
@@ -459,7 +456,6 @@
 			files = (
 				692C836D28AE3FD900FB2421 /* TubuyaitaApp.swift in Sources */,
 				69105E5328B5B0EB0048AED3 /* ServersModel.swift in Sources */,
-				69557F2928AFB80C0008E44B /* PhoenixConnection.swift in Sources */,
 				69105E5B28B5C18F0048AED3 /* ServerSelectMenuModel.swift in Sources */,
 				690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */,
 				692C837228AE3FD900FB2421 /* Tubuyaita.xcdatamodeld in Sources */,

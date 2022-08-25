@@ -37,6 +37,15 @@ struct EncryptedContent : Codable {
     var nonce: String
 }
 
+struct MessageContent : Codable {
+    // if encrypted contents
+    var contents: Optional<[EncryptedContent]>
+    // if content
+    var body: Optional<String>
+    var retweet: Optional<Retweet>
+    var timestamp: UInt64
+}
+
 struct PhoenixMessageContents : Codable {
     // if encrypted contents
     var contents: Optional<[EncryptedContent]>
@@ -57,4 +66,12 @@ struct PhoenixMessageContents : Codable {
         retweet = content.retweet
         timestamp = content.timestamp
     }
+}
+
+struct ReceivedMessage : Codable {
+    var contents_hash: String
+    var created_at: Int64
+    var public_key: String
+    var raw_message: String
+    var sign: String
 }

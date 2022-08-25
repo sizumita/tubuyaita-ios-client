@@ -34,10 +34,33 @@ struct TimeLineView: View {
                         // Websocket経由で受け取ったメッセージ。最古->最新
                         ForEach(model.receivedMessages.reversed()) { message in
                             TweetView(message: message)
+                                .swipeActions(edge: .trailing) {
+                                    NavigationLink {
+                                        MessageDetailView(
+                                                message: Binding<TubuyaitaMessage>.init(get: { message }, set: { m, t in }))
+                                    } label: {
+                                        Image(systemName: "info.circle")
+                                                .foregroundColor(.red)
+                                    }
+                                }
                         }
                         // HTTP経由で取得したメッセージ。最新->最古
                         ForEach(model.fetchedMessages) { message in
-                            Text(message.parsedContent)
+                            TweetView(message: message)
+                                .swipeActions(edge: .trailing) {
+                                    NavigationLink {
+                                        MessageDetailView(
+                                                message: Binding<TubuyaitaMessage>.init(get: { message }, set: { m, t in }))
+                                    } label: {
+                                        Image(systemName: "info.circle")
+                                                .foregroundColor(.red)
+                                    }
+                                }
+                        }
+                        Button {
+                            task.loadHistory()
+                        } label: {
+                            Text("メッセージを読み込む")
                         }
                     }.listStyle(.plain)
                 } else {
@@ -45,8 +68,9 @@ struct TimeLineView: View {
                 }
             }
             .onAppear {
-                print("aaa")
-                task.initialize()
+                if !model.isInitialized {
+                    task.initialize()
+                }
             }
                     .onDisappear {
                         task.disconnect()
