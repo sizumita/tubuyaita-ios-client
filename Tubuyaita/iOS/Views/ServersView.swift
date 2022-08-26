@@ -32,7 +32,6 @@ struct ServersView: View {
                                 ServerView(model: ServerModel(server: server))
                                         .id(i)
                                         .frame(width: reader.size.width, height: reader.size.height)
-                                        .navigationBarTitleDisplayMode(.inline)
                                         .onAppear {
                                             if !servers.isEmpty {
                                                 model.selectedServerIndex = 0
@@ -44,18 +43,12 @@ struct ServersView: View {
                                     useCase.updateServer(newValue: newValue, reader: reader, servers: servers)
                                 }
                                 .offset(x: model.offset)
+                                .navigationBarTitleDisplayMode(.inline)
                                 .navigationTitle(model.navigationTitle)
                                 .edgesIgnoringSafeArea(.bottom)
                     }
                             .edgesIgnoringSafeArea(.bottom)
                 }
-
-                        .sheet(isPresented: $model.isCreateServerPresented) {
-                            AddServerView()
-                        }
-                        .sheet(isPresented: $model.isPreferencePresented) {
-                            PreferenceView()
-                        }
                         .toolbar {
                             ToolbarItem(placement: .navigationBarLeading) {
                                 ServerSelectMenuView(model: ServerSelectMenuModel(index: $model.selectedServerIndex))

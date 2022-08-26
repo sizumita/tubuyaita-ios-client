@@ -17,7 +17,6 @@ struct ServerSelectMenuView: View {
         Menu {
             ForEach(Array(servers.enumerated()), id: \.offset) { i, server in
                 Button {
-                    // NOTE: ここでServerViewのWebsocketを消し飛ばしたい
                     model.selectedServerIndex = i
                     let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
                     feedbackGenerator.impactOccurred()
@@ -26,8 +25,16 @@ struct ServerSelectMenuView: View {
                 }
                 .disabled(model.selectedServerIndex == i)
             }
+            Button(action: {
+                model.isPreferencePresented.toggle()
+            }, label: {
+                Text("設定")
+            })
         } label: {
             Image(systemName: "globe")
         }
+                .sheet(isPresented: $model.isPreferencePresented) {
+                    PreferenceView()
+                }
     }
 }

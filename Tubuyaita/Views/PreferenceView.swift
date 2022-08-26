@@ -10,19 +10,19 @@ import CoreData
 
 struct PreferenceView: View {
     @Environment(\.presentationMode) var presentation
-    
+
     @EnvironmentObject var account: AccountStore
     @Environment(\.managedObjectContext) private var viewContext
     @State private var isAddServerPresented = false
-    
+
     @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
     var servers: FetchedResults<Server>
-    
+
 
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("現在のアカウント")) {
+                Section(header: Text("Accounts")) {
                     ShareLink("公開鍵: \(account.getHexPublicKey() ?? "")", item: account.getHexPublicKey() ?? "")
                     ShareLink("秘密鍵をコピー", item: account.getHexSecretKey() ?? "")
                             .foregroundColor(.red)
@@ -30,19 +30,31 @@ struct PreferenceView: View {
                         account.createAccount()
                     }
                 }
-            }
-            .navigationTitle("設定")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("閉じる") {
-                        presentation.wrappedValue.dismiss()
+
+                Section(header: Text("サーバー")) {
+                    ForEach(servers) { server in
+                        NavigationLink(destination: {
+                            ServerPreferenceView(server: server)
+                        }, label: {
+                            Text(server.address!)
+                        })
                     }
                 }
             }
+                    .navigationTitle("設定")
+                    .navigationBarTitleDisplayMode(.inline)
+
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button("閉じる") {
+                                presentation.wrappedValue.dismiss()
+                            }
+                        }
+                    }
         }
-        .sheet(isPresented: $isAddServerPresented) {
-            AddServerView()
-        }
+                .sheet(isPresented: $isAddServerPresented) {
+                    AddServerView()
+                }
     }
 }
 

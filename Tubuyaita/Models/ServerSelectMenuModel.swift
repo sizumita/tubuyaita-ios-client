@@ -10,6 +10,7 @@ import SwiftUI
 
 class ServerSelectMenuModel : ObservableObject {
     @Binding var selectedServerIndex: Int?
+    @Published var isPreferencePresented = false
     
     init(index: Binding<Int?>) {
         self._selectedServerIndex = index
