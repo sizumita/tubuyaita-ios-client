@@ -7,79 +7,63 @@
 
 import SwiftUI
 
-enum Path: Hashable {
-    case server(Server)
-    case account(Account)
-}
 
-final class RouterNavigationPath: ObservableObject {
-    @Published var path: [Path] = []
-}
 
 struct ServersView: View {
-    @StateObject var model = ServersModel()
-    @ObservedObject var router: RouterNavigationPath = .init()
+    @StateObject var model: ServersModel
+    @StateObject var useCase: ServersUseCase
 
     @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
     var servers: FetchedResults<Server>
-    
-    @State private var path: [Account] = []
 
+    init() {
+        let serversModel = ServersModel()
+        self._model = StateObject(wrappedValue: serversModel)
+        self._useCase = StateObject(wrappedValue: ServersUseCase(model: serversModel))
+    }
 
     var body: some View {
-        NavigationStack(path: $router.path) {
-            List {
-                ForEach(servers) { server in
-                    NavigationLink(value: Path.server(server)) {
-                        Text(server.address!)
-                    }
-                }
-            }
-            .navigationTitle("サーバー一覧")
-            .navigationDestination(for: Path.self) { path in
-                switch path {
-                case let .account(account):
-                    AccountDetailView(model: .init(account: .init(get: {account}, set: {a in})))
-                case let .server(server):
-                    ServerView(model: ServerModel(server: server))
-                        .toolbar {
-                            ToolbarItem(placement: .navigationBarLeading) {
-                                ServerSelectMenuView(model: .init(server: Binding(get: {server}, set: {s in })))
+        GeometryReader { reader in
+            NavigationStack {
+                ScrollViewReader { proxy in
+                    ScrollView([], showsIndicators: false) {
+                        HStack {
+                            ForEach(Array(servers.enumerated()), id: \.offset) { i, server in
+                                ServerView(model: ServerModel(server: server))
+                                        .id(i)
+                                        .frame(width: reader.size.width, height: reader.size.height)
+                                        .navigationBarTitleDisplayMode(.inline)
+                                        .onAppear {
+                                            if !servers.isEmpty {
+                                                model.selectedServerIndex = 0
+                                            }
+                                        }
                             }
                         }
+                                .onChange(of: model.selectedServerIndex) { (newValue: Int?) in
+                                    useCase.updateServer(newValue: newValue, reader: reader, servers: servers)
+                                }
+                                .offset(x: model.offset)
+                                .navigationTitle(model.navigationTitle)
+                                .edgesIgnoringSafeArea(.bottom)
+                    }
+                            .edgesIgnoringSafeArea(.bottom)
                 }
+
+                        .sheet(isPresented: $model.isCreateServerPresented) {
+                            AddServerView()
+                        }
+                        .sheet(isPresented: $model.isPreferencePresented) {
+                            PreferenceView()
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                ServerSelectMenuView(model: ServerSelectMenuModel(index: $model.selectedServerIndex))
+                            }
+                        }
             }
-            .toolbar {
-                toolbar
-            }
-        }
-        .sheet(isPresented: $model.isCreateServerPresented) {
-            AddServerView()
-        }
-        .fullScreenCover(isPresented: $model.isPreferencePresented) {
-            PreferenceView()
-        }
-        .environmentObject(router)
-    }
-    
-    var toolbar: some ToolbarContent {
-        Group {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    model.isCreateServerPresented.toggle()
-                } label: {
-                    Text("追加")
-                        .bold()
-                }
-            }
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    model.isPreferencePresented.toggle()
-                } label: {
-                    Text("設定")
-                        .bold()
-                }
-            }
+                    .frame(width: reader.size.width, height: reader.size.height)
+                    .edgesIgnoringSafeArea(.bottom)
         }
     }
 }

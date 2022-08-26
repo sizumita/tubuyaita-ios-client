@@ -1,5 +1,5 @@
 //
-//  TimeLineTask.swift
+//  TimeLineUseCase.swift
 //  Tubuyaita
 //
 //  Created by Sumito Izumita on 2022/08/24.
@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 import Combine
 
-class TimeLineTask : ObservableObject {
-    var model: TimeLineModel
+class TimeLineUseCase : ObservableObject {
+    private var model: TimeLineModel
     private var repository: TimeLineRepository
-    private var cancel: AnyCancellable?
+    private var cancels: [AnyCancellable] = []
 
     init(model: TimeLineModel) {
         self.model = model
@@ -20,17 +20,37 @@ class TimeLineTask : ObservableObject {
     }
 
     func initialize() {
-        cancel = repository.messageSubject.sink { message in
+        let cancel = repository.messagePublisher().sink { message in
             DispatchQueue.main.async {
                 self.model.receivedMessages.append(message)
             }
         }
+        cancels.append(cancel)
+        let cancel2 = repository.socketPublisher().sink { (status: SocketStatus) in
+            switch status {
+            case .connect:
+                self.model.status = .connected
+            case .disconnect:
+                break
+            case .error(let err):
+                self.repository.disconnect()
+                self.model.status = .error
+            }
+        }
+        cancels.append(cancel2)
         repository.connect(server: model.server)
+        model.status = .connecting
+        initializeMessages()
+    }
+
+    func reconnect() {
+        repository.connect(server: model.server)
+        model.status = .connecting
         initializeMessages()
     }
 
     func disconnect() {
-        cancel?.cancel()
+        cancels.map({c in c.cancel()})
     }
 
     func loadHistory() {
@@ -60,9 +80,6 @@ class TimeLineTask : ObservableObject {
     private func initializeMessages() {
         Task {
             await loadOldMessages()
-            DispatchQueue.main.async {
-                self.model.isInitialized = true
-            }
         }
     }
 }

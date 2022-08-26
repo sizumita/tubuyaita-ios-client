@@ -9,9 +9,9 @@ import Foundation
 import SwiftUI
 
 class ServerSelectMenuModel : ObservableObject {
-    @Binding var server: Server
+    @Binding var selectedServerIndex: Int?
     
-    init(server: Binding<Server>) {
-        self._server = server
+    init(index: Binding<Int?>) {
+        self._selectedServerIndex = index
     }
 }

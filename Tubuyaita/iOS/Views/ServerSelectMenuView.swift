@@ -9,26 +9,22 @@ import SwiftUI
 
 struct ServerSelectMenuView: View {
     @StateObject var model: ServerSelectMenuModel
-    @EnvironmentObject var router: RouterNavigationPath
-    
+
     @FetchRequest(entity: Server.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \Server.address, ascending: true)])
     var servers: FetchedResults<Server>
 
     var body: some View {
         Menu {
-            ForEach(servers) { server in
+            ForEach(Array(servers.enumerated()), id: \.offset) { i, server in
                 Button {
                     // NOTE: ここでServerViewのWebsocketを消し飛ばしたい
-                    router.path.append(.server(server))
+                    model.selectedServerIndex = i
+                    let feedbackGenerator = UIImpactFeedbackGenerator(style: .heavy)
+                    feedbackGenerator.impactOccurred()
                 } label: {
                     Text(server.address!)
                 }
-                .disabled(model.server == server)
-            }
-            Button {
-                router.path.removeLast(router.path.count)
-            } label: {
-                Text("サーバー一覧")
+                .disabled(model.selectedServerIndex == i)
             }
         } label: {
             Image(systemName: "globe")

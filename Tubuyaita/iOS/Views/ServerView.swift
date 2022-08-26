@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ServerView: View {
     @StateObject var model: ServerModel
@@ -14,22 +15,19 @@ struct ServerView: View {
         ZStack {
             TabView(selection: $model.tab) {
                 TimeLineView(server: model.server)
-                    .tabItem {
-                        Image(systemName: "bubble.left.fill")
-                    }
-                    .tag(0)
+                        .tabItem {
+                            Image(systemName: "bubble.left.fill")
+                        }
+                        .tag(0)
                 AccountsView(server: model.server)
-                    .tabItem {
-                        Image(systemName: "person.circle.fill")
-                    }
-                    .tag(1)
+                        .tabItem {
+                            Image(systemName: "person.circle.fill")
+                        }
+                        .tag(1)
             }
             if model.tab == 0 {
                 NewMessageButtonView()
             }
         }
-        .navigationBarBackButtonHidden()
-        .navigationTitle(model.server.address!)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }

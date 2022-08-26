@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		336897E7D970702637271578 /* TimeLineRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3368946A62F39F3C0A71E8D5 /* TimeLineRepository.swift */; };
+		336898E93D44B2C865A04312 /* ServersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33689F6BE17855E36B0EE35F /* ServersUseCase.swift */; };
 		33689FD45BB8DCECF463CAFD /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33689FDD98E5DB2813DE5C14 /* Spinner.swift */; };
 		690AECE828AF40F9005BB646 /* AddServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690AECE728AF40F9005BB646 /* AddServerView.swift */; };
 		690B8ECE28B5CE6C00C24506 /* AccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B8ECD28B5CE6C00C24506 /* AccountDetailModel.swift */; };
-		690B8ED128B5FA8500C24506 /* TimeLineTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B8ED028B5FA8500C24506 /* TimeLineTask.swift */; };
+		690B8ED128B5FA8500C24506 /* TimeLineUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 690B8ED028B5FA8500C24506 /* TimeLineUseCase.swift */; };
 		69105E5128B5AE7B0048AED3 /* ServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5028B5AE7B0048AED3 /* ServersView.swift */; };
 		69105E5328B5B0EB0048AED3 /* ServersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5228B5B0EB0048AED3 /* ServersModel.swift */; };
 		69105E5528B5B7CF0048AED3 /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69105E5428B5B7CF0048AED3 /* ServerView.swift */; };
@@ -70,10 +71,11 @@
 
 /* Begin PBXFileReference section */
 		3368946A62F39F3C0A71E8D5 /* TimeLineRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeLineRepository.swift; sourceTree = "<group>"; };
+		33689F6BE17855E36B0EE35F /* ServersUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServersUseCase.swift; sourceTree = "<group>"; };
 		33689FDD98E5DB2813DE5C14 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		690AECE728AF40F9005BB646 /* AddServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServerView.swift; sourceTree = "<group>"; };
 		690B8ECD28B5CE6C00C24506 /* AccountDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailModel.swift; sourceTree = "<group>"; };
-		690B8ED028B5FA8500C24506 /* TimeLineTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineTask.swift; sourceTree = "<group>"; };
+		690B8ED028B5FA8500C24506 /* TimeLineUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineUseCase.swift; sourceTree = "<group>"; };
 		69105E5028B5AE7B0048AED3 /* ServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersView.swift; sourceTree = "<group>"; };
 		69105E5228B5B0EB0048AED3 /* ServersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersModel.swift; sourceTree = "<group>"; };
 		69105E5428B5B7CF0048AED3 /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
@@ -162,7 +164,8 @@
 		690B8ECF28B5FA6800C24506 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				690B8ED028B5FA8500C24506 /* TimeLineTask.swift */,
+				690B8ED028B5FA8500C24506 /* TimeLineUseCase.swift */,
+				33689F6BE17855E36B0EE35F /* ServersUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -477,7 +480,7 @@
 				69515DF428AF5BF60068CE86 /* TimeLineView.swift in Sources */,
 				69557F2D28AFCFF60008E44B /* CreateMessageModel.swift in Sources */,
 				692C83A428AE4A5C00FB2421 /* PreferenceView.swift in Sources */,
-				690B8ED128B5FA8500C24506 /* TimeLineTask.swift in Sources */,
+				690B8ED128B5FA8500C24506 /* TimeLineUseCase.swift in Sources */,
 				69FD488328AF2A5E005EF55E /* Message.swift in Sources */,
 				69B0F7B228B1DC24000A98FB /* Message+Extension.swift in Sources */,
 				69105E5D28B5C9930048AED3 /* NewMessageButtonView.swift in Sources */,
@@ -487,6 +490,7 @@
 				69B0F7AD28B1D060000A98FB /* Date+Extension.swift in Sources */,
 				33689FD45BB8DCECF463CAFD /* Spinner.swift in Sources */,
 				336897E7D970702637271578 /* TimeLineRepository.swift in Sources */,
+				336898E93D44B2C865A04312 /* ServersUseCase.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,7 +666,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.5;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sumidora.Tubuyaita;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -704,7 +708,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.5;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sumidora.Tubuyaita;
 				PRODUCT_NAME = "$(TARGET_NAME)";

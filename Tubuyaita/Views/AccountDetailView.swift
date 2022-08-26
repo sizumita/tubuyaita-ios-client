@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AccountDetailView: View {
     @StateObject var model: AccountDetailModel
-    @EnvironmentObject var router: RouterNavigationPath
     @State private var edited = false
     @State private var name: String = ""
     @State private var iconUrl: String = ""
@@ -60,7 +59,6 @@ struct AccountDetailView: View {
                     model.account.iconUrl = URL(string: iconUrl)
                     try? viewContext.save()
                     edited = false
-                    router.path.removeLast()
                 }.disabled(!edited)
             }
         }

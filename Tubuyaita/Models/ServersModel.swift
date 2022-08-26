@@ -11,4 +11,8 @@ import SwiftUI
 class ServersModel : ObservableObject {
     @Published var isCreateServerPresented = false
     @Published var isPreferencePresented = false
+
+    @Published var selectedServerIndex: Int?
+    @Published var offset: CGFloat = 0
+    @Published var navigationTitle = "サーバーを追加してください"
 }

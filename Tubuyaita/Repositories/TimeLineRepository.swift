@@ -62,7 +62,6 @@ class TimeLineRepository : ObservableObject {
             self.socketSubject.send(.disconnect)
         }
         socket!.delegateOnError(to: self) { (self, err) in
-            print(err)
             self.socketSubject.send(.error(err))
         }
         socket!.delegateOnMessage(to: self) { (self, message) in
@@ -78,7 +77,8 @@ class TimeLineRepository : ObservableObject {
     }
 
     func disconnect() {
-        socket!.disconnect()
+        messageChannel?.leave()
+        socket?.disconnect()
     }
 
     func messagePublisher() -> AnyPublisher<TubuyaitaMessage, Never> {

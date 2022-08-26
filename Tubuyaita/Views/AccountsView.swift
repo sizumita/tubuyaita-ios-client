@@ -25,7 +25,7 @@ struct AccountsView: View {
         Form {
             Section("名前設定済み") {
                 List(namedAccounts) { account in
-                    NavigationLink(value: Path.account(account)) {
+                    NavigationLink(value: account) {
                         AccountLabelView(account: Binding(get: {
                             account
                         }, set: {x in}))
@@ -34,7 +34,7 @@ struct AccountsView: View {
             }
             Section("名前なし") {
                 List(unnamedAccounts) { account in
-                    NavigationLink(value: Path.account(account)) {
+                    NavigationLink(value: account) {
                         AccountLabelView(account: Binding(get: {
                             account
                         }, set: {x in}))
