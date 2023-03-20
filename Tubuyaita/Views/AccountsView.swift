@@ -42,6 +42,5 @@ struct AccountsView: View {
                 }
             }
         }
-        .navigationTitle("アカウント一覧")
     }
 }
